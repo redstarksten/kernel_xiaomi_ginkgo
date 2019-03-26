@@ -4032,7 +4032,7 @@ static int sde_plane_sspp_atomic_update(struct drm_plane *plane,
 		memset(&(psde->pipe_cfg), 0, sizeof(struct sde_hw_pipe_cfg));
 
 	_sde_plane_set_scanout(plane, pstate, &psde->pipe_cfg, fb);
-
+	
 	is_rt = sde_crtc_get_client_type(crtc) != NRT_CLIENT;
 	if (is_rt != psde->is_rt_pipe) {
 		psde->is_rt_pipe = is_rt;

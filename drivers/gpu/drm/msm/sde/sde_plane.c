@@ -3889,7 +3889,7 @@ static int sde_plane_sspp_atomic_update(struct drm_plane *plane,
 	struct drm_crtc *crtc;
 	struct drm_framebuffer *fb;
 	struct sde_rect src, dst;
- 	bool is_rt;
+	bool is_rt;
 	bool q16_data = true;
 	int idx;
 
@@ -4033,6 +4033,7 @@ static int sde_plane_sspp_atomic_update(struct drm_plane *plane,
 
 	_sde_plane_set_scanout(plane, pstate, &psde->pipe_cfg, fb);
 
+	is_rt = sde_crtc_get_client_type(crtc) != NRT_CLIENT;
 	if (is_rt != psde->is_rt_pipe) {
 		psde->is_rt_pipe = is_rt;
 		pstate->dirty |= SDE_PLANE_DIRTY_QOS;

@@ -1796,7 +1796,7 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 		{ "system-background",	"0-3"},//0-2
 		{ "restricted",			"0-5"},//0-7
 		{ "top-app",			"0-7"},//0-7
-		{ "camera-daemon",		"0-3,6-7"}};//0-7
+		{ "camera-daemon",		"0-7"}};//0-7
 
 	if (!strcmp(current->comm, "init")) {
 		for (i = 0; i < ARRAY_SIZE(c_targets); i++) {
@@ -1805,46 +1805,6 @@ static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
 				pr_info("%s: setting to %s\n", c_targets[i].c_name, buf);
 				break;
 			}
-		}
-	}
-#endif
-
-	buf = strstrip(buf);
-
-	return cpuset_write_resmask(of, buf, nbytes, off);
-}
-
-static ssize_t cpuset_write_resmask_assist(struct kernfs_open_file *of,
-					   struct cs_target tgt, size_t nbytes,
-					   loff_t off)
-{
-	pr_info("cpuset_assist: setting %s to %s\n", tgt.name, tgt.cpus);
-	return cpuset_write_resmask(of, tgt.cpus, nbytes, off);
-}
-
-static ssize_t cpuset_write_resmask_wrapper(struct kernfs_open_file *of,
-					 char *buf, size_t nbytes, loff_t off)
-{
-#ifdef CONFIG_CPUSET_ASSIST
-	static struct cs_target cs_targets[] = {
-		{ "audio-app",		CONFIG_CPUSET_AUDIO_APP },
-		{ "background",		CONFIG_CPUSET_BG },
-		{ "camera-daemon",	CONFIG_CPUSET_CAMERA },
-		{ "foreground",		CONFIG_CPUSET_FG },
-		{ "restricted",		CONFIG_CPUSET_RESTRICTED },
-		{ "system-background",	CONFIG_CPUSET_SYSTEM_BG },
-		{ "top-app",		CONFIG_CPUSET_TOP_APP },
-	};
-	struct cpuset *cs = css_cs(of_css(of));
-	int i;
-
-	if (task_is_booster(current)) {
-		for (i = 0; i < ARRAY_SIZE(cs_targets); i++) {
-			struct cs_target tgt = cs_targets[i];
-
-			if (!strcmp(cs->css.cgroup->kn->name, tgt.name))
-				return cpuset_write_resmask_assist(of, tgt,
-								   nbytes, off);
 		}
 	}
 #endif

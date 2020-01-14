@@ -136,6 +136,7 @@ void static_key_slow_inc_cpuslocked(struct static_key *key)
 		atomic_set_release(&key->enabled, 1);
 	} else {
 		atomic_inc(&key->enabled);
+		queue_delayed_work(system_power_efficient_wq, work, rate_limit);
 	}
 	jump_label_unlock();
 }

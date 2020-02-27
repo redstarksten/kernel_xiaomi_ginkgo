@@ -4,7 +4,7 @@ if BLOCK
 menu "IO Schedulers"
 
 config IOSCHED_NOOP
-	bool
+	bool "No-op I/O scheduler"
 	default y
 
 

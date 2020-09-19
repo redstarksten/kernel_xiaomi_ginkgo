@@ -234,7 +234,6 @@ ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)
 		trinket-external-codec-idp-overlay.dtbo \
 		trinket-usbc-external-codec-idp-overlay.dtbo \
 		trinket-usbc-idp-overlay.dtbo \
-		trinket-dp-idp-overlay.dtbo
 
 trinket-rumi-overlay.dtbo-base := trinket.dtb
 trinket-idp-overlay.dtbo-base := trinket.dtb
@@ -243,16 +242,16 @@ trinket-external-codec-idp-overlay.dtbo-base := trinket.dtb
 trinket-usbc-external-codec-idp-overlay.dtbo-base := trinket.dtb
 trinket-usbc-idp-overlay.dtbo-base := trinket.dtb
 trinket-dp-idp-overlay.dtbo-base := trinket.dtb
-qcm6125-iot-idp-overlay.dtbo-base := qcm6125.dtb
-qcs6125-iot-idp-overlay.dtbo-base := qcs6125.dtb
-qcm6125-iot-external-codec-idp-overlay.dtbo-base := qcm6125.dtb
-qcs6125-iot-external-codec-idp-overlay.dtbo-base := qcs6125.dtb
-qcm6125-iot-usbc-external-codec-idp-overlay.dtbo-base := qcm6125.dtb
-qcs6125-iot-usbc-external-codec-idp-overlay.dtbo-base := qcs6125.dtb
-qcm6125-iot-usbc-idp-overlay.dtbo-base := qcm6125.dtb
-qcs6125-iot-usbc-idp-overlay.dtbo-base := qcs6125.dtb
-qcm6125-iot-dp-idp-overlay.dtbo-base := qcm6125.dtb
-qcs6125-iot-dp-idp-overlay.dtbo-base := qcs6125.dtb
+trinket-iot-idp-overlay.dtbo-base := trinket-iot.dtb
+trinketp-iot-idp-overlay.dtbo-base := trinketp-iot.dtb
+trinket-iot-external-codec-idp-overlay.dtbo-base := trinket-iot.dtb
+trinketp-iot-external-codec-idp-overlay.dtbo-base := trinketp-iot.dtb
+trinket-iot-usbc-external-codec-idp-overlay.dtbo-base := trinket-iot.dtb
+trinketp-iot-usbc-external-codec-idp-overlay.dtbo-base := trinketp-iot.dtb
+trinket-iot-usbc-idp-overlay.dtbo-base := trinket-iot.dtb
+trinketp-iot-usbc-idp-overlay.dtbo-base := trinketp-iot.dtb
+trinket-iot-dp-idp-overlay.dtbo-base := trinket-iot.dtb
+trinketp-iot-dp-idp-overlay.dtbo-base := trinketp-iot.dtb
 else
 dtb-$(CONFIG_ARCH_TRINKET)	+= trinket-rumi.dtb \
 	trinket-idp.dtb \
@@ -261,16 +260,16 @@ dtb-$(CONFIG_ARCH_TRINKET)	+= trinket-rumi.dtb \
 	trinket-usbc-external-codec-idp.dtb \
 	trinket-usbc-idp.dtb \
 	trinket-dp-idp.dtb \
-	qcm6125-iot-idp.dtb \
-	qcs6125-iot-idp.dtb \
-	qcm6125-iot-external-codec-idp.dtb \
-	qcs6125-iot-external-codec-idp.dtb \
-	qcm6125-iot-usbc-external-codec-idp.dtb \
-	qcs6125-iot-usbc-external-codec-idp.dtb \
-	qcm6125-iot-usbc-idp.dtb \
-	qcs6125-iot-usbc-idp.dtb \
-	qcm6125-iot-dp-idp.dtb \
-	qcs6125-iot-dp-idp.dtb
+	trinket-iot-idp.dtb \
+	trinketp-iot-idp.dtb \
+	trinket-iot-external-codec-idp.dtb \
+	trinketp-iot-external-codec-idp.dtb \
+	trinket-iot-usbc-external-codec-idp.dtb \
+	trinketp-iot-usbc-external-codec-idp.dtb \
+	trinket-iot-usbc-idp.dtb \
+	trinketp-iot-usbc-idp.dtb \
+	trinket-iot-dp-idp.dtb \
+	trinketp-iot-dp-idp.dtb
 endif
 
 ifeq ($(CONFIG_BUILD_ARM64_DT_OVERLAY),y)

@@ -13,8 +13,9 @@ export KBUILD_BUILD_USER=bukandewa
 export KBUILD_BUILD_HOST=pro
 export PATH="$HOME/proton-clang/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tc-build/install/lib:$LD_LIBRARY_PATH"
+export PATH="/usr/lib/ccache:$PATH"
+export USE_CCACHE=1
 #export DTC_EXT=dtc
-export KBUILD_COMPILER_STRING="$("$HOME"/proton-clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 
@@ -22,7 +23,7 @@ KERNEL_DIR=$(pwd)
 IMAGE_DIR=$KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb
 DTB_DIR=$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/trinket.dtb
 KERNEL_NAME=EndLesS
-KERNEL_VER=RC2.1
+KERNEL_VER=RC2.3
 TANGGAL=$(date '+%Y%m%d')
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
@@ -87,11 +88,9 @@ function compile() {
     echo "==========================================="
     echo -e "Create Defconfig process..."
     echo "==========================================="
-    make -j"$(nproc)" O=out $CONFIG > /dev/null
+    make -j"$(nproc)" O=out $CONFIG
     echo "==========================================="
-    echo -e "Compile kernel process...\nUse :"
-    echo "==========================================="
-    echo "$("$HOME"/proton-clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
+    echo -e "Compile kernel process...:"
     echo "==========================================="
     make O=out -j$(nproc) \
                     CC="clang" \

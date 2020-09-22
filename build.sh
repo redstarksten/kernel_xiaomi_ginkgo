@@ -15,6 +15,8 @@ export PATH="$HOME/proton-clang/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/tc-build/install/lib:$LD_LIBRARY_PATH"
 export PATH="/usr/lib/ccache:$PATH"
 export USE_CCACHE=1
+export CCACHE_DIR=$HOME/.ccache
+#export DTC_EXT=dtc
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 

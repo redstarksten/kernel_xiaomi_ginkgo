@@ -35,7 +35,6 @@ set_perm_recursive 0 0 750 750 $ramdisk/init* $ramdisk/sbin;
 
 ## AnyKernel install
 dump_boot;
-cat $home/dts/*.dtb > $split_img/kernel_dtb;
 write_boot;
 ## end install
 

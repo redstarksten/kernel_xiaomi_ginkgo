@@ -23,8 +23,8 @@ git config --global user.name "bukandewa"
 KERNEL_DIR=$(pwd)
 IMAGE_DIR=$KERNEL_DIR/out/arch/arm64/boot/Image.gz-dtb
 DTB_DIR=$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb
-KERNEL_NAME=Stark-X
-KERNEL_VER=R1
+KERNEL_NAME=StarkX
+KERNEL_VER=Mars
 TANGGAL=$(date '+%Y%m%d'-'%H%M')
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig

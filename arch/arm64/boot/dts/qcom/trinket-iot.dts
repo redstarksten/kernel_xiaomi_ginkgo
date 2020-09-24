@@ -12,25 +12,11 @@
  */
 
 /dts-v1/;
-
-<<<<<<< HEAD
-<<<<<<< HEAD:arch/arm64/boot/dts/qcom/trinket-iot.dts
-=======
->>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
-#include "trinket-iot.dtsi"
-
-/ {
-	model = "Qualcomm Technologies, Inc. TRINKET IOT IDP SoC";
-	compatible = "qcom,trinket-iot";
-<<<<<<< HEAD
-=======
+	
 #include "trinketp-iot.dtsi"
 
 / {
 	model = "Qualcomm Technologies, Inc. TRINKET SoC";
 	compatible = "qcom,trinketp-iot";
->>>>>>> LA.UM.8.9.r1-10600-SM6xx.0:arch/arm64/boot/dts/qcom/trinketp-iot.dts
-=======
->>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
 	qcom,board-id = <0 0>;
 };

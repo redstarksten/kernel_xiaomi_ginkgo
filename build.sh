@@ -1,6 +1,6 @@
 #!/bin/bash
 echo -e "Script by :\n"
-echo -e "#####  #    # #    #   ##   ##   # ####   #######     #   ## " 
+echo -e "#####  #    # #    #   ##   ##   # ####   #######     #   ## "
 echo -e "#    # #    # #  ##    ##   ###  # #   ## #     #  #  #   ## "
 echo -e "###### #    # ###     #  #  # ## # #    # ####### ### #  #  # "
 echo -e "#    # #    # #  ##   ####  #  # # #    # #      ## ###  #### "
@@ -30,58 +30,58 @@ ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
 
 function checker() {
-CHECK1=$KERNEL_DIR/out
-if [[ -d "$CHECK1" ]]; then
-cd out
-echo -e  "==========================================="
-echo -e "Old config is exist! Clean first..."
-echo -e  "===========================================\n"
-echo -e  "==========================================="
-echo -e "Cleaning process..."
-echo -e  "===========================================\n"
-make clean && make mrproper && make distclean && cd ..
-echo -e  "===================================="
-echo -e "Cleaning done! Continue..."
-echo -e  "====================================\n"
-rm -rf $CHECK1
-echo -e  "==========================================="
-echo -e "Checking Dependencies 1... OK! "
-echo -e  "===========================================\n"
-fi
-
-CHECK2=$KERNEL_DIR/Anykernel
-if [[ -d "$CHECK2" ]]; then
-echo -e  "==========================================="
-echo -e "Anykernel already exist. Continue..."
-echo -e  "===========================================\n"
-echo -e  "==========================================="
-echo -e "Checking Dependencies 2... OK! "
-echo -e  "===========================================\n"
-else
-cd $KERNEL_DIR
-echo -e  "===================="
-echo -e "Cloning Anykernel..."
-echo -e  "===================="
-git clone https://github.com/redstarksten/Anykernel.git
-fi
-
-CHECK3=$KERNEL_DIR/signer/zipsigner-3.0.jar
-if [[ -f "$CHECK3" ]]; then
-echo -e  "==========================================="
-echo -e "zipsigner already exist. Continue..."
-echo -e  "===========================================\n"
-echo -e  "==========================================="
-echo -e "Checking Dependencies 3... OK!"
-echo -e  "===========================================\n"
-else
-echo -e  "===================="
-echo -e "Cloning zigpsigner..."
-echo -e  "====================\n"
-mkdir signer && curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
-echo -e  "==========================================="
-echo -e "All dependencies ready. Continue..."
-echo -e  "===========================================\n"
-fi
+    CHECK1=$KERNEL_DIR/out
+    if [[ -d "$CHECK1" ]]; then
+        cd out
+        echo -e  "==========================================="
+        echo -e "Old config is exist! Clean first..."
+        echo -e  "===========================================\n"
+        echo -e  "==========================================="
+        echo -e "Cleaning process..."
+        echo -e  "===========================================\n"
+        make clean && make mrproper && make distclean && cd ..
+        echo -e  "===================================="
+        echo -e "Cleaning done! Continue..."
+        echo -e  "====================================\n"
+        rm -rf $CHECK1
+        echo -e  "==========================================="
+        echo -e "Checking Dependencies 1... OK! "
+        echo -e  "===========================================\n"
+    fi
+    
+    CHECK2=$KERNEL_DIR/Anykernel
+    if [[ -d "$CHECK2" ]]; then
+        echo -e  "==========================================="
+        echo -e "Anykernel already exist. Continue..."
+        echo -e  "===========================================\n"
+        echo -e  "==========================================="
+        echo -e "Checking Dependencies 2... OK! "
+        echo -e  "===========================================\n"
+    else
+        cd $KERNEL_DIR
+        echo -e  "===================="
+        echo -e "Cloning Anykernel..."
+        echo -e  "===================="
+        git clone https://github.com/redstarksten/Anykernel.git
+    fi
+    
+    CHECK3=$KERNEL_DIR/signer/zipsigner-3.0.jar
+    if [[ -f "$CHECK3" ]]; then
+        echo -e  "==========================================="
+        echo -e "zipsigner already exist. Continue..."
+        echo -e  "===========================================\n"
+        echo -e  "==========================================="
+        echo -e "Checking Dependencies 3... OK!"
+        echo -e  "===========================================\n"
+    else
+        echo -e  "===================="
+        echo -e "Cloning zigpsigner..."
+        echo -e  "====================\n"
+        mkdir signer && curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
+        echo -e  "==========================================="
+        echo -e "All dependencies ready. Continue..."
+        echo -e  "===========================================\n"
+    fi
 }
 
 # Compile
@@ -94,87 +94,87 @@ function compile() {
     echo -e "Compile kernel process...:"
     echo -e  "===========================================\n"
     make O=out -j$(nproc) \
-                    CC="clang" \
-                    CXX="clang++" \
-                    LD="ld.lld" \
-                    AR="llvm-ar" \
-                    NM="llvm-nm" \
-                    OBJCOPY="llvm-objcopy" \
-                    OBJDUMP="llvm-objdump" \
-                    STRIP="llvm-strip" \
-                    CLANG_TRIPLE=aarch64-linux-gnu- \
-                    CROSS_COMPILE=aarch64-linux-gnu- \
-                    CROSS_COMPILE_ARM32=arm-linux-gnueabi-\
-                    Image.gz-dtb
+    CC="clang" \
+    CXX="clang++" \
+    LD="ld.lld" \
+    AR="llvm-ar" \
+    NM="llvm-nm" \
+    OBJCOPY="llvm-objcopy" \
+    OBJDUMP="llvm-objdump" \
+    STRIP="llvm-strip" \
+    CLANG_TRIPLE=aarch64-linux-gnu- \
+    CROSS_COMPILE=aarch64-linux-gnu- \
+    CROSS_COMPILE_ARM32=arm-linux-gnueabi-\
+    Image.gz-dtb
 }
 
 # Zipping
 function zipping() {
     if [[ -f $IMAGE_DIR ]]; then
-    echo -e  "==========================================="
-    echo -e "Using cat command to concatenate dtb file"
-    echo -e  "===========================================\n"
-    cat $IMAGE_DIR $DTB_DIR > Anykernel/Image.gz-dtb
-    cd Anykernel
-    echo -e  "==========================================="
-    echo -e "Zipping process..."
-    echo -e  "===========================================\n"
-    zip -r9 unsigned.zip *
-    echo -e  "==========================================="
-    echo -e "Zipping success! "
-    echo -e  "===========================================\n"
-    mv unsigned.zip ../signer/
-    rm -r *-dtb
-    cd ..
+        echo -e  "==========================================="
+        echo -e "Using cat command to concatenate dtb file"
+        echo -e  "===========================================\n"
+        cat $IMAGE_DIR $DTB_DIR > Anykernel/Image.gz-dtb
+        cd Anykernel
+        echo -e  "==========================================="
+        echo -e "Zipping process..."
+        echo -e  "===========================================\n"
+        zip -r9 unsigned.zip *
+        echo -e  "==========================================="
+        echo -e "Zipping success! "
+        echo -e  "===========================================\n"
+        mv unsigned.zip ../signer/
+        rm -r *-dtb
+        cd ..
     else
-    echo -e  "Failed!"
+        echo -e  "Failed!"
     fi
 }
 
 #signer
 function signer() {
-	if [[ -f "$KERNEL_DIR/signer/unsigned.zip" ]]; then
-	echo -e  "==========================================="
-	echo -e "Entering signer folder"
-	echo -e  "===========================================\n"
-	cd signer
-	echo -e  "==========================================="
-	echo -e "Removing old zip..."
-	echo -e "===========================================\n"
-	echo -e  "==========================================="
-	echo -e "Signing process..."
-	echo -e  "===========================================\n"
-	java -jar zipsigner-3.0.jar \
-	unsigned.zip $ZIPNAME-signed.zip
-	echo -e  "==========================================="
-	echo -e "Signing zip success! "
-	echo -e  "===========================================\n"
-	rm unsigned.zip
-	else
-	echo -e  "Failed!"
-	fi
+    if [[ -f "$KERNEL_DIR/signer/unsigned.zip" ]]; then
+        echo -e  "==========================================="
+        echo -e "Entering signer folder"
+        echo -e  "===========================================\n"
+        cd signer
+        echo -e  "==========================================="
+        echo -e "Removing old zip..."
+        echo -e "===========================================\n"
+        echo -e  "==========================================="
+        echo -e "Signing process..."
+        echo -e  "===========================================\n"
+        java -jar zipsigner-3.0.jar \
+        unsigned.zip $ZIPNAME-signed.zip
+        echo -e  "==========================================="
+        echo -e "Signing zip success! "
+        echo -e  "===========================================\n"
+        rm unsigned.zip
+    else
+        echo -e  "Failed!"
+    fi
 }
 
 #upload_gdrive
 function gdrive() {
     if [[ -f "$ZIPNAME-signed.zip" ]]; then
-    echo -e  "==========================================="	
-    echo -e "Uploading process..."
-    echo -e  "===========================================\n"
-    cp $ZIPNAME-signed.zip /run/user/1000/gvfs/google-drive:host=gmail.com,user=mahadewanto2/1LGS8Afn9iMZjcQ02nTz1b7_gfHbiZK_B
-    echo -e  "==========================================="
-    echo -e "Upload to gdrive success!"
-    echo -e  "===========================================\n"
-    cd ..
+        echo -e  "==========================================="
+        echo -e "Uploading process..."
+        echo -e  "===========================================\n"
+        cp $ZIPNAME-signed.zip /run/user/1000/gvfs/google-drive:host=gmail.com,user=mahadewanto2/1LGS8Afn9iMZjcQ02nTz1b7_gfHbiZK_B
+        echo -e  "==========================================="
+        echo -e "Upload to gdrive success!"
+        echo -e  "===========================================\n"
+        cd ..
     else
-    echo -e  "Failed!"
-    	fi
+        echo -e  "Failed!"
+    fi
 }
 
-#checker
-#compile
+checker
+compile
 zipping
 signer
-#gdrive
+gdrive
 echo -e "Completed $ZIPNAME-signed.zip in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
 

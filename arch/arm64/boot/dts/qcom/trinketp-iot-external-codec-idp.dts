@@ -12,13 +12,31 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
+<<<<<<< HEAD:arch/arm64/boot/dts/qcom/trinketp-iot-external-codec-idp.dts
 #include "trinketp-iot.dtsi"
 #include "trinketp-iot-idp.dtsi"
+=======
+#include "trinket-iot.dtsi"
+#include "trinket-iot-idp.dtsi"
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0:arch/arm64/boot/dts/qcom/trinket-iot-external-codec-idp.dts
+=======
+#include "trinketp-iot.dtsi"
+#include "trinketp-iot-idp.dtsi"
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
 #include "trinket-tasha-codec-audio-overlay.dtsi"
 #include "trinket-tasha-codec.dtsi"
 
 / {
 	model = "Qualcomm Technologies, Inc. TRINKET IOT Ext Audio Codec IDP";
+<<<<<<< HEAD
+<<<<<<< HEAD:arch/arm64/boot/dts/qcom/trinketp-iot-external-codec-idp.dts
 	compatible = "qcom,trinketp-iot-idp", "qcom,trinketp-iot", "qcom,idp";
+=======
+	compatible = "qcom,trinket-iot-idp", "qcom,trinket-iot", "qcom,idp";
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0:arch/arm64/boot/dts/qcom/trinket-iot-external-codec-idp.dts
+=======
+	compatible = "qcom,trinketp-iot-idp", "qcom,trinketp-iot", "qcom,idp";
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
 	qcom,board-id = <34 1>;
 };

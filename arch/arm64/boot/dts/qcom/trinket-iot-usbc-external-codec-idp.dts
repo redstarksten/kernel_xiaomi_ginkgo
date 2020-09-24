@@ -12,11 +12,11 @@
 
 /dts-v1/;
 
-#include "trinket-iot.dtsi"
-#include "trinket-iot-idp.dtsi"
+#include "trinketp-iot.dtsi"
+#include "trinketp-iot-idp.dtsi"
 
 / {
-	model = "Qualcomm Technologies,Inc. TRINKET IOT USBC Ext Aud Codec IDP";
-	compatible = "qcom,trinket-iot-idp", "qcom,trinket-iot", "qcom,idp";
+	model = "Qualcomm Technologies,Inc. TRINKETIOT USBC Ext AudioCodec IDP";
+	compatible = "qcom,trinketp-iot-idp", "qcom,trinketp-iot", "qcom,idp";
 	qcom,board-id = <34 3>;
 };

@@ -13,12 +13,12 @@
 
 /dts-v1/;
 
-#include "trinket-iot.dtsi"
-#include "trinket-iot-idp.dtsi"
+#include "trinketp-iot.dtsi"
+#include "trinketp-iot-idp.dtsi"
 
 / {
 	model = "Qualcomm Technologies, Inc. TRINKET IOT Disp. Port Enable IDP";
-	compatible = "qcom,trinket-iot-idp", "qcom,trinket-iot", "qcom,idp";
+	compatible = "qcom,trinketp-iot-idp", "qcom,trinketp-iot", "qcom,idp";
 	qcom,board-id = <34 4>;
 };
 

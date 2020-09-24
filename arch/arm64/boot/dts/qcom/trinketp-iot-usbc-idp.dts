@@ -12,6 +12,10 @@
 
 /dts-v1/;
 
+<<<<<<< HEAD
+<<<<<<< HEAD:arch/arm64/boot/dts/qcom/trinketp-iot-usbc-idp.dts
+=======
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
 #include "trinketp-iot.dtsi"
 #include "trinketp-iot-idp.dtsi"
 #include "trinketp-iot-usbc-idp.dtsi"
@@ -19,5 +23,17 @@
 / {
 	model = "Qualcomm Technologies, Inc. TRINKET IOT USBC Audio IDP";
 	compatible = "qcom,trinketp-iot-idp", "qcom,trinketp-iot", "qcom,idp";
+<<<<<<< HEAD
+=======
+#include "qcs610.dtsi"
+#include "prairie-iot-idp.dtsi"
+#include "prairie-iot-usbc-idp.dtsi"
+
+/ {
+	model = "Qualcomm Technologies, Inc. QCS610 PM6150 USBC Audio IDP";
+	compatible = "qcom,qcs610-idp", "qcom,qcs610", "qcom,idp";
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0:arch/arm64/boot/dts/qcom/prairie-iot-usbc-idp.dts
+=======
+>>>>>>> LA.UM.8.9.r1-10600-SM6xx.0
 	qcom,board-id = <34 2>;
 };

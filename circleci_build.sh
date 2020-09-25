@@ -1,37 +1,35 @@
 #!/usr/bin/env bash
-KERNEL_DIR="/root/project"
-IMAGE=Image.gz-dtb
+Image=Image.gz-dtb
 CONFIG=vendor/ginkgo-perf_defconfig
-IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
-ANY_DIR="$KERNEL_DIR/Anykernel"
-ANY_IMG="$ANY_DIR/$IMAGE"
-DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb"
-SIGNER_DIR="$KERNEL_DIR/signer"
-FINAL_ZIP="$SIGNER_DIR/$ZIPNAME.signed.zip"
+Img_Dir=$(pwd)/out/arch/arm64/boot/$Image
+Any_Dir=$(pwd)/Anykernel
+Any_Img=$Any_Dir/$Image
+Dtb=$(pwd)/out/arch/arm64/boot/dts/qcom/*.dtb
+Signer_Dir=$(pwd)/signer
+Final_Zip=$Signer_Dir/$Zipname.signed.zip
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
-KERNEL_NAME="StarkX"
-DEVICE="Ginkgo"
-ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
-mkdir $(pwd)/temp
+Kernel_Name=StarkX
+Device=Ginkgo
+Zipname=$Kernel_Name-$Device-${tanggal}
 echo -e "   #############################################"
 echo -e "  #                                           #"
-echo -e " # Update, Clone Clang, Install Dependencies #"
+echo -e " #             Dependencies...               #"
 echo -e "#                                           #"
-echo -e "############################################"
-apt-get update -y && apt-get upgrade -y
-apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
-git clone -j32 https://github.com/NusantaraDevs/clang clang
+echo -e "############################################\n"
+#sudo apt-get update -y && sudo apt-get upgrade -y
+#sudo apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
+# git clone -j32 https://github.com/NusantaraDevs/clang clang
 echo -e "   #############################################"
 echo -e "  #                                           #"
 echo -e " #       All Done! Continue Process...       #"
 echo -e "#                                           #"
-echo -e "############################################"
+echo -e "############################################\n"
 export token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 export chat_id="513350521"
 export TEMP=$(pwd)/temp
-export PATH="/root/clang/bin:$PATH"
-export LD_LIBRARY_PATH="/root/clang/lib:$LD_LIBRARY_PATH"
+export PATH="$HOME/clang/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
@@ -47,7 +45,7 @@ function sticker() {
         echo -e "  #                                           #"
         echo -e " #             Send Sticker Success!         #"
         echo -e "#                                           #"
-        echo -e "############################################"
+        echo -e "############################################\n"
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
                         -d sticker="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1BCmgcEbGwQ" \
                         -d chat_id=$chat_id
@@ -58,7 +56,7 @@ function stikerr() {
         echo -e "  #                                           #"
         echo -e " #             Send Sticker Error!           #"
         echo -e "#                                           #"
-        echo -e "############################################"
+        echo -e "############################################\n"
 	curl -s -F chat_id=$chat_id -F sticker="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ" https://api.telegram.org/bot$token/sendSticker
 }
 # Send info plox channel
@@ -67,23 +65,24 @@ function sendinfo() {
         echo -e "  #                                           #"
         echo -e " #               Sendinfo...                 #"
         echo -e "#                                           #"
-        echo -e "############################################"
-        PATH="/root/clang/bin:${PATH}"
+        echo -e "############################################\n"
+        PATH="$HOME/clang/bin:${PATH}"
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>StarkX Kernel</b> New Update is Coming!%0A<b>Started on :</b> <code>circleCI</code>%0A<b>For device :</b> <b>Ginkgo</b> (Redmi Note 8)%0A<b>Kernel Version :</b> <code>$(make kernelversion)</code>%0A<b>Branch :</b> <code>$(git rev-parse --abbrev-ref HEAD)</code>%0A<b>Under commit :</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Using compiler :</b> <code>$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on :</b> <code>$(TZ=Asia/Jakarta date)</code>%0A<b>circleCI Status :</b> <a href='https://app.circleci.com/pipelines/github/redstarksten/kernel_xiaomi_ginkgo'>here</a>"
+                        -d text="<b>StarkX Kernel</b> New Update is Coming!%0A<b>Started on :</b> <code>circleCI</code>%0A<b>For device :</b> <b>Ginkgo</b> (Redmi Note 8)%0A<b>Kernel Version :</b> <code>$(make kernelversion)</code>%0A<b>Branch :</b> <code>$(git rev-parse --abbrev-ref HEAD)</code>%0A<b>Under commit :</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Using compiler :</b> <code>$($HOME/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on :</b> <code>$(TZ=Asia/Jakarta date)</code>%0A<b>circleCI Status :</b> <a href='https://app.circleci.com/pipelines/github/redstarksten/kernel_xiaomi_ginkgo'>here</a>"
 }
 # Push kernel to channel
 function push() {
+        echo -e ""
         echo -e "   #############################################"
         echo -e "  #                                           #"
         echo -e " #          Push Message to Telegram!        #"
         echo -e "#                                           #"
-        echo -e "############################################"
-        cd $SIGNER_DIR
-	curl -F document=@$(echo $FINAL_ZIP) "https://api.telegram.org/bot$token/sendDocument" \
+        echo -e "############################################\n"
+        cd $Signer_Dir
+	curl -F document=@$(echo "$Zipname-signed.zip") "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -91,11 +90,12 @@ function push() {
 }
 # Function upload logs to my own TELEGRAM paste
 function paste() {
+        echo -e ""
         echo -e "   #############################################"
         echo -e "  #                                           #"
         echo -e " #                Paste Log!                 #"
         echo -e "#                                           #"
-        echo -e "############################################"
+        echo -e "############################################\n"
         cat $TEMP/build.log | curl -F document=@$(echo $TEMP/*.log) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
@@ -103,11 +103,12 @@ function paste() {
 }
 # Fin Error
 function finerr() {
+        echo -e ""
         echo -e "   #############################################"
         echo -e "  #                                           #"
         echo -e " #             Paste Log Error!              #"
         echo -e "#                                           #"
-        echo -e "############################################"
+        echo -e "############################################\n"
         paste
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
 			-d chat_id="$chat_id" \
@@ -119,9 +120,16 @@ function finerr() {
 function compile() {
         echo -e "   #############################################"
         echo -e "  #                                           #"
+        echo -e " #      Cleaning old Config Exist....        #"
+        echo -e "#                                           #"
+        echo -e "############################################\n"
+cd out
+make clean && make mrproper && make distclean && cd ..
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
         echo -e " #          Compile Kernel Process...        #"
         echo -e "#                                           #"
-        echo -e "############################################"
+        echo -e "############################################\n"
 make O=out ARCH=arm64 $CONFIG
 # PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \
@@ -136,27 +144,27 @@ make -j$(nproc --all) O=out \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-gnu- \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                      $IMAGE | tee $TEMP/build.log
+                      $Image | tee $TEMP/build.log
 
-        if ! [ -a $IMG_DIR ]; then
+        if ! [ -a $Img_Dir ]; then
                 finerr
 		stikerr
                 exit 1
         fi
-        cp $IMG_DIR $ANY_IMG
 }
 # Zipping
 function zipping() {
+        cat "$Any_Img" "$Dtb" > "$Any_Img"
+        mv $Img_Dir $Any_Img
         echo -e "   #############################################"
         echo -e "  #                                           #"
         echo -e " #           Zipping To Anykernel...         #"
         echo -e "#                                           #"
-        echo -e "############################################"
-        if ! [[ -f "$ANY_IMG" ]]; then
-        cat $ANY_IMG $DTB > $ANY_IMG
-        cd $ANY_DIR
+        echo -e "############################################\n"
+        if ! [[ -f $Any_Img ]]; then
+        cd $Any_Dir
         zip -r9 unsigned.zip *
-        mv unsigned.zip $SIGNER_DIR && cd
+        mv unsigned.zip $Signer_Dir && cd ..
         fi
 }
 #signer
@@ -165,20 +173,22 @@ function signer() {
         echo -e "  #                                           #"
         echo -e " #           Signing Zip Process...          #"
         echo -e "#                                           #"
-        echo -e "############################################"
-        if [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
-        cd $SIGNER_DIR
+        echo -e "############################################\n"
+        if [[ -f $Signer_Dir/unsigned.zip ]]; then
+        cd $Signer_Dir
         java -jar zipsigner-3.0.jar \
-        unsigned.zip $ZIPNAME-signed.zip
+        unsigned.zip $Zipname-signed.zip
         rm unsigned.zip && cd
+        else
+        echo "Failed!"
         fi
 }
-sendinfo
-compile
+#compile
 zipping
 signer
 END=$(date +"%s")
 DIFF=$(($END - $START))
+sendinfo
 paste
 push
 sticker

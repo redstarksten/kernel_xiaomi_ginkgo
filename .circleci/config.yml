@@ -10,7 +10,7 @@ jobs:
            git config --global user.name "redstarksten"
            git config --global user.email "mahadewanto2@gmail.com"
            git config --global color.ui false
-           git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
+           git clone https://github.com/NusantaraDevs/clang
            mkdir kernel
            cd kernel
            wget https://raw.githubusercontent.com/redstarksten/build.sh

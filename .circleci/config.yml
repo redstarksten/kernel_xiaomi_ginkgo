@@ -10,6 +10,7 @@ jobs:
            git config --global user.name "redstarksten"
            git config --global user.email "mahadewanto2@gmail.com"
            git config --global color.ui false
+           git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
            git clone https://github.com/NusantaraDevs/clang
            git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo
            cd kernel_xiaomi_ginkgo

@@ -3,6 +3,11 @@ jobs:
   build:
     docker:
       - image: ubuntu:18.04
+     - run : 
+      command : |
+      apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex bison
+           git config --global user.name "redstarksten"
+           git config --global user.email "mahadewanto2@gmail.com"
     steps:
       - checkout
       - run: wget https://raw.githubusercontent.com/redstarksten/kernel_xiaomi_ginkgo/10.0/circleci_build.sh

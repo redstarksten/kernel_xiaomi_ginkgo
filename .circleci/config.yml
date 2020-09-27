@@ -10,11 +10,10 @@ jobs:
            git config --global user.name "redstarksten"
            git config --global user.email "mahadewanto2@gmail.com"
            git config --global color.ui false
+           https://github.com/redstarksten/kernel_xiaomi_ginkgo
            git clone https://github.com/NusantaraDevs/clang
            git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
-           mkdir kernel
-           cd kernel
-           wget https://raw.githubusercontent.com/redstarksten/kernel_xiaomi_ginkgo/10.0/build.sh
+           cd kernel_xiaomi_ginkgo
            bash build.sh
 workflows:
   version: 2.1

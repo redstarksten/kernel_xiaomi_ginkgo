@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 echo -e "Script by :\n"
 echo -e "#####  #    # #    #   ##   ##   # ####   #######     #   ## "
 echo -e "#    # #    # #  ##    ##   ###  # #   ## #     #  #  #   ## "
@@ -175,6 +175,6 @@ checker
 compile
 zipping
 signer
-gdrive
+#gdrive
 echo -e "Completed $ZIPNAME-signed.zip in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s) !"
 

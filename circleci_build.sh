@@ -13,8 +13,8 @@ KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
-export PATH="root/clang/bin:$PATH"
-export LD_LIBRARY_PATH="/root/clang/lib:$PATH"
+export PATH="project/clang/bin:$PATH"
+export LD_LIBRARY_PATH="project/clang/lib:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_USER=bukandewa
 export KBUILD_BUILD_HOST=pro
@@ -75,7 +75,7 @@ make -j$(nproc --all) O=out \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-gnu- \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- | tee build.log
-        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/zImage
+        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz-dtb
 }
 # Zipping
 function zipping() {

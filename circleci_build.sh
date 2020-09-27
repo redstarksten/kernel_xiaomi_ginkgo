@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Toolchain, Anykernel and GCC"
+git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo
 git clone https://github.com/redstarksten/Anykernel.git AnyKernel
 git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone --depth=1 https://github.com/NusantaraDevs/clang clang
@@ -13,8 +14,9 @@ START=$(date +"%s")
 KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
-CONFIG=ginkgo-perf_defconfig
-export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"
+CONFIG=vendor/ginkgo-perf_defconfig
+export PATH="root/clang/bin:$PATH"
+export LD_LIBRARY_PATH="/root/clang/lib:$PATH"
 export ARCH=arm64
 export KBUILD_BUILD_USER=bukandewa
 export KBUILD_BUILD_HOST=pro

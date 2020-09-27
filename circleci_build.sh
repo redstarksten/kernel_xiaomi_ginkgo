@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Toolchain, Anykernel and GCC"
-git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo
+git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo.git
 git clone https://github.com/redstarksten/Anykernel.git AnyKernel
-git clone --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
-git clone --depth=1 https://github.com/NusantaraDevs/clang clang
+git clone --depth=1 https://github.com/NusantaraDevs/clang.git clang
 echo "Done"
 token=$(openssl enc -base64 -d <<< MTI5MDc5MjQxNDpBQUY4QWJQVWc4QkpQcG5rVjhLTUV5ZW5FNnlZeW1od0ljZw==)
 chat_id="-1001460435505"
-GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
 KERNEL_NAME=StarkX
@@ -67,6 +65,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+cd
+cd kernel_xiaomi_ginkgo
 make O=out ARCH=arm64 $CONFIG
 PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \

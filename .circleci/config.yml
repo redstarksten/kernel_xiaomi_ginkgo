@@ -13,7 +13,7 @@ jobs:
            git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
            mkdir kernel
            cd kernel
-           wget https://raw.githubusercontent.com/andeh24/Scripts/master/script.sh
+           wget https://raw.githubusercontent.com/redstarksten/build.sh
            bash script.sh
 workflows:
   version: 2.1

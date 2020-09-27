@@ -3,7 +3,7 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Toolchain, Anykernel and GCC"
 git clone -j32 git clone https://github.com/redstarksten/Anykernel.git AnyKernel
 git clone -j32 --depth=1 git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
-git clone -j32 --depth=1 https://github.com/NusantaraDevs/clang clang
+git clone -j32 --depth=1 git clone https://github.com/NusantaraDevs/clang clang
 echo "Done"
 token=$(openssl enc -base64 -d <<< MTI5MDc5MjQxNDpBQUY4QWJQVWc4QkpQcG5rVjhLTUV5ZW5FNnlZeW1od0ljZw==)
 chat_id="-1001460435505"

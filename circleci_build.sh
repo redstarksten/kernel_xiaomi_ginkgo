@@ -6,7 +6,7 @@ apt-get update -y && apt-get upgrade -y
 apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
 git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
 mkdir signer \
-curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
+# curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
 git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 https://github.com/NusantaraDevs/clang clang
 echo "Done"
@@ -36,7 +36,7 @@ function stikerr() {
 # Send info plox channel
 function sendinfo() {
         PATH="/root/clang/bin:${PATH}"
-        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
@@ -44,8 +44,8 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
-        cd signer
-	curl -F document=@$ZIPNAME.signed.zip "https://api.telegram.org/bot$token/sendDocument" \
+        cd Anykernel
+	curl -F document=@$ZIPNAME.zip "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -61,7 +61,7 @@ function paste() {
 # Fin Error
 function finerr() {
         paste
-        curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
+        curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
 			-d chat_id="$chat_id" \
 			-d "disable_web_page_preview=true" \
 			-d "parse_mode=markdown" \
@@ -96,16 +96,12 @@ make -j$(nproc --all) O=out \
 function zipping() {
         cat $IMAGE $DTB > Anykernel/Image.gz-dtb
         cd AnyKernel
-        zip -r9 unsigned.zip *
-        mv unsigned.zip ../signer/
-        cd ../signer
-        java -jar zipsigner-3.0.jar unsigned.zip $ZIPNAME-signed.zip
-        ZIP_FINAL=$ZIPNAME-signed.zip
+        zip -r9 $ZIPNAME.zip *
+        cd ..
 }
 sendinfo
 compile
 zipping
-signer
 END=$(date +"%s")
 DIFF=$(($END - $START))
 paste

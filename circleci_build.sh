@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-echo "Clone Toolchain, Anykernel and GCC"
-git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo.git ginkgo
-git clone https://github.com/redstarksten/Anykernel.git AnyKernel
-git clone https://github.com/NusantaraDevs/clang.git clang
+echo "Clone Anykernel and GCC"
+git clone -j32 https://github.com/redstarksten/AnyKernel -b master AnyKernel
+git clone -j32 --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
+git clone -j32 --depth=1 https://github.com/NusantaraDevs/clang clang
 echo "Done"
 token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
-chat_id="-1001460435505"
-tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
+chat_id="513350521"
+GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_NAME=StarkX
-KERNEL_VER=Mars
-ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
-CONFIG=vendor/ginkgo-perf_defconfig
-
+DEVICE=Ginkgo
+export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"xport ARCH=arm64
+export KBUILD_BUILD_USER=bukandewa
+export KBUILD_BUILD_HOST=Circleci
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -31,12 +32,12 @@ function sendinfo() {
                         -d chat_id=$chat_id \
                         -d "disable_web_page_preview=true" \
                         -d "parse_mode=html" \
-                        -d text="<b>StarkX Kernel</b> New Build is UP!%0A<b>Started on :</b> <code>CircleCI</code>%0A<b>For device :</b> <b>Vince</b> (Redmi 5 Plus)%0A<b>Kernel Version :</b> <code>$(make kernelversion)</code>%0A<b>Branch :</b> <code>$(git rev-parse --abbrev-ref HEAD)</code>%0A<b>Under commit :</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Using compiler :</b> <code>$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on :</b> <code>$(TZ=Asia/Jakarta date)</code>%0A<b>CircleCI Status :</b> <a href='https://circleci.com/gh/redstarksten/kernel_xiaomi_ginkgo'>here</a>"
+                        -d text="<b>StarkX Kernel</b> New Build is UP!%0A<b>Started on :</b> <code>circleCI</code>%0A<b>For device :</b> <b>Ginkgo</b> (Redmi Note 8)%0A<b>Kernel Version :</b> <code>$(make kernelversion)</code>%0A<b>Branch :</b> <code>$(git rev-parse --abbrev-ref HEAD)</code>%0A<b>Under commit :</b> <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0A<b>Using compiler :</b> <code>$($(pwd)/clang/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0A<b>Started on :</b> <code>$(TZ=Asia/Jakarta date)</code>%0A<b>circleCI Status :</b> <a href='https://app.circleci.com/pipelines/github/redstarksten/kernel_xiaomi_ginkgo'>here</a>"
 }
 # Push kernel to channel
 function push() {
         cd AnyKernel
-	ZIP=$(echo StarkX-Kernel-*.zip)
+	ZIP=$(echo Mina-Kernel-*.zip)
 	curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
@@ -61,42 +62,25 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-cd ginkgo
-export ARCH=arm64
-export SUBARCH=arm64
-export KBUILD_BUILD_USER=bukandewa
-export KBUILD_BUILD_HOST=desktop
-export PATH="/root/clang/bin:$PATH"
-export LD_LIBRARY_PATH="/root/clang/lib:$LD_LIBRARY_PATH"
-export CROSS_COMPILE="/root/clang/bin/aarch64-linux-android-"
-export CROSS_COMPILE_ARM32="/root/clang/bin/arm-linux-androideabi-"
-export PATH="/usr/lib/ccache:$PATH"
-export USE_CCACHE=1
-export CCACHE_DIR=$HOME/.ccache
-        make clean && make mrproper && make distclean
-        make ARCH=arm64 -j$(nproc) O=out $CONFIG
-echo -e  "==========================================="
-echo -e "Compile kernel process...:"
-echo -e  "===========================================\n"
-        make ARCH=arm64 O=out -j$(nproc) \
-        CC=clang \
-        CXX=clang++ \
-        LD=ld.lld \
-        AR=llvm-ar \
-        NM=llvm-nm \
-        OBJCOPY=llvm-objcopy \
-        OBJDUMP=llvm-objdump \
-        STRIP=llvm-strip \
-        CLANG_TRIPLE=aarch64-linux-gnu- \
-        CROSS_COMPILE=aarch64-linux-gnu- \
-        CROSS_COMPILE_ARM32=arm-linux-gnueabi-\
-        Image.gz-dtb
-        cd ..
+make O=out ARCH=arm64 vendor/ginkgo-perf_defconfig
+PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
+make -j$(nproc --all) O=out \
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-linux-gnu- \
+                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- | tee build.log
+            if ! [ -a $IMAGE ]; then
+                finerr
+		stikerr
+                exit 1
+            fi
+        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/zImage
 }
 # Zipping
 function zipping() {
         cd AnyKernel
-        zip -r9 $ZIPNAME-${tanggal}.zip *
+        zip -r9 $KERNEL_NAME-$DEVICE-${tanggal}.zip *
         cd ..
 }
 sendinfo

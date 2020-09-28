@@ -3,7 +3,7 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Anykernel and GCC"
 apt-get update -y && apt-get upgrade -y
 apt-get install -y python3 git cmake clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
-git clone -j32 https://github.com/redstarksten/AnyKernel -b master AnyKernel
+git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
 git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 https://github.com/NusantaraDevs/clang clang
 echo "Done"
@@ -12,8 +12,6 @@ chat_id="513350521"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
-KERNEL_NAME=StarkX
-DEVICE=Ginkgo
 export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"xport ARCH=arm64
 export KBUILD_BUILD_USER=bukandewa
 export KBUILD_BUILD_HOST=Circleci
@@ -77,18 +75,20 @@ make -j$(nproc --all) O=out \
                       STRIP=llvm-strip \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-gnu- \
-                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- | tee build.log
+                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+                      Image.gz-dtb | tee build.log
+
             if ! [ -a $IMAGE ]; then
                 finerr
 		stikerr
                 exit 1
             fi
-        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/zImage
+        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz-dtb
 }
 # Zipping
 function zipping() {
         cd AnyKernel
-        zip -r9 $KERNEL_NAME-$DEVICE-${tanggal}.zip *
+        zip -r9 StarkX-Ginkgo-${tanggal}.zip *
         cd ..
 }
 sendinfo

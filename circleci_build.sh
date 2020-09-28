@@ -5,7 +5,7 @@ echo "Clone Anykernel and GCC"
 apt-get update -y && apt-get upgrade -y
 apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
 git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
-mkdir signer \
+# mkdir signer \
 # curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
 git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 https://github.com/NusantaraDevs/clang clang
@@ -25,16 +25,19 @@ export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=Circleci
 # sticker plox
 function sticker() {
+        echo "Send Sticker"
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
                         -d sticker="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1BCmgcEbGwQ" \
                         -d chat_id=$chat_id
 }
 # Stiker Error
 function stikerr() {
+        echo "Send Stiker Error"
 	curl -s -F chat_id=$chat_id -F sticker="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ" https://api.telegram.org/bot$token/sendSticker
 }
 # Send info plox channel
 function sendinfo() {
+        echo "Sending Information About New Update"
         PATH="/root/clang/bin:${PATH}"
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
@@ -44,8 +47,9 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
+        echo - "Push flashable zip to telegram"
         cd Anykernel
-	curl -F document=@$ZIPNAME.zip "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@"$ZIPNAME.zip" "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -53,6 +57,7 @@ function push() {
 }
 # Function upload logs to my own TELEGRAM paste
 function paste() {
+        echo "Create log"
         cat build.log | curl -F document=@build.log "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
@@ -60,6 +65,7 @@ function paste() {
 }
 # Fin Error
 function finerr() {
+        echo "Send Error Message"
         paste
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
 			-d chat_id="$chat_id" \
@@ -69,6 +75,7 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+        echo "Compile Process. Please Wait..."
 make O=out ARCH=arm64 vendor/ginkgo-perf_defconfig
 PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \
@@ -94,6 +101,7 @@ make -j$(nproc --all) O=out \
 }
 # Zipping
 function zipping() {
+        echo "Zipping Image.gz-dtb using Anykernel"
         cat $IMAGE $DTB > Anykernel/Image.gz-dtb
         cd AnyKernel
         zip -r9 $ZIPNAME.zip *

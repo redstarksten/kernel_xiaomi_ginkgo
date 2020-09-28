@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: ubuntu:20.04
+      - image: ubuntu:18.04
     steps:
       - checkout
       - run: wget https://raw.githubusercontent.com/redstarksten/kernel_xiaomi_ginkgo/10.0/circleci_build.sh

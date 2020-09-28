@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Toolchain, Anykernel and GCC"
-git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo.git
+git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo.git ginkgo
 git clone https://github.com/redstarksten/Anykernel.git AnyKernel
-git clone --depth=1 https://github.com/NusantaraDevs/clang.git clang
+git clone https://github.com/NusantaraDevs/clang.git clang
 echo "Done"
 token=$(openssl enc -base64 -d <<< MTI5MDc5MjQxNDpBQUY4QWJQVWc4QkpQcG5rVjhLTUV5ZW5FNnlZeW1od0ljZw==)
 chat_id="-1001460435505"
@@ -13,11 +13,10 @@ KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
-export PATH="project/clang/bin:$PATH"
-export LD_LIBRARY_PATH="project/clang/lib:$PATH"
-export ARCH=arm64
 export KBUILD_BUILD_USER=bukandewa
-export KBUILD_BUILD_HOST=pro
+export KBUILD_BUILD_HOST=desktop
+export PATH="$HOME/clang/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -65,17 +64,22 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-cd
-cd kernel_xiaomi_ginkgo
+        cd ginkgo
 make O=out ARCH=arm64 $CONFIG
-PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \
-                      ARCH=arm64 \
-                      CC=clang \
-                      CLANG_TRIPLE=aarch64-linux-gnu- \
-                      CROSS_COMPILE=aarch64-linux-gnu- \
-                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- | tee build.log
-        cp out/arch/arm64/boot/Image.gz-dtb AnyKernel/Image.gz-dtb
+        CC=clang \
+        CXX=clang++ \
+        LD=ld.lld \
+        AR=llvm-ar \
+        NM=llvm-nm \
+        OBJCOPY=llvm-objcopy \
+        OBJDUMP=llvm-objdump \
+        STRIP=llvm-strip \
+        CLANG_TRIPLE=aarch64-linux-gnu- \
+        CROSS_COMPILE=aarch64-linux-gnu- \
+        CROSS_COMPILE_ARM32=arm-linux-gnueabi-\
+        Image.gz-dtb
+        cd ..
 }
 # Zipping
 function zipping() {

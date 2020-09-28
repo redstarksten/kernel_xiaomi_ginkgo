@@ -21,6 +21,9 @@ export PATH="$HOME/clang/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
 export CROSS_COMPILE=$HOME/clang/bin/aarch64-linux-android-
 export CROSS_COMPILE_ARM32=$HOME/clang/bin/arm-linux-androideabi-
+export PATH="/usr/lib/ccache:$PATH"
+export USE_CCACHE=1
+export CCACHE_DIR=$HOME/.ccache
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \

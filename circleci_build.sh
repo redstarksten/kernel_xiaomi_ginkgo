@@ -3,7 +3,7 @@ IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 DTB=$(pwd)/out/arch/arm64/boot/dts/qcom/*.dtb
 echo "Clone Anykernel and GCC"
 apt-get update -y && apt-get upgrade -y
-apt-get install -y python3 git cmake clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
+apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
 git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
 mkdir signer \
 curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
@@ -95,9 +95,11 @@ make -j$(nproc --all) O=out \
 }
 # Zipping
 function zipping() {
-        cat $IMAGE $DTB > Anykernel/Image.gz-dtb && cd AnyKernel
+        cat $IMAGE $DTB > Anykernel/Image.gz-dtb
+        cd AnyKernel
         zip -r9 unsigned.zip *
-        cp unsigned.zip ../signer/ && cd ..
+        mv unsigned.zip ../signer/
+        cd ..
 }
 # Signing
 function signer() {
@@ -107,7 +109,6 @@ function signer() {
         unsigned.zip $ZIPNAME-signed.zip
     fi
 }
-sticker
 sendinfo
 compile
 zipping
@@ -116,4 +117,5 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 paste
 push
+sticker
 

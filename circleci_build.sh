@@ -13,17 +13,7 @@ KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
-export ARCH=arm64
-export SUBARCH=arm64
-export KBUILD_BUILD_USER=bukandewa
-export KBUILD_BUILD_HOST=desktop
-export PATH="$HOME/clang/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
-export CROSS_COMPILE=/usr/bin/aarch64-linux-android-
-export CROSS_COMPILE_ARM32=/usr/bin/arm-linux-androideabi-
-export PATH="/usr/lib/ccache:$PATH"
-export USE_CCACHE=1
-export CCACHE_DIR=$HOME/.ccache
+
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
@@ -72,6 +62,17 @@ function finerr() {
 # Compile plox
 function compile() {
 cd ginkgo
+export ARCH=arm64
+export SUBARCH=arm64
+export KBUILD_BUILD_USER=bukandewa
+export KBUILD_BUILD_HOST=desktop
+export PATH="$HOME/clang/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
+export CROSS_COMPILE="$HOME/clang/bin/aarch64-linux-android-"
+export CROSS_COMPILE_ARM32="$HOME/clang/bin/arm-linux-androideabi-"
+export PATH="/usr/lib/ccache:$PATH"
+export USE_CCACHE=1
+export CCACHE_DIR=$HOME/.ccache
         make clean && make mrproper && make distclean
         make ARCH=arm64 -j$(nproc) O=out $CONFIG
 echo -e  "==========================================="

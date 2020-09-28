@@ -18,7 +18,6 @@ START=$(date +"%s")
 KERNEL="StarkX"
 DEVICE="Ginkgo"
 ZIPNAME="$KERNEL-$DEVICE-${tanggal}"
-PUSHDIR="/root/Anykernel/$ZIPNAME.zip"
 export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"
 export ARCH=arm64
 export SUBARCH=arm64
@@ -50,7 +49,7 @@ function sendinfo() {
 function push() {
         echo - "Push flashable zip to telegram"
         cd Anykernel
-	curl -F document=@"$PUSHDIR" "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@"/root/Anykernel/$ZIPNAMPE.zip" "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \

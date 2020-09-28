@@ -66,11 +66,11 @@ function finerr() {
 function compile() {
 cd ginkgo
         make clean && make mrproper && make distclean
-        make -j$(nproc) O=out $CONFIG
+        make ARCH=arm64 -j$(nproc) O=out $CONFIG
 echo -e  "==========================================="
 echo -e "Compile kernel process...:"
 echo -e  "===========================================\n"
-        make O=out -j$(nproc) \
+        make ARCH=arm64 O=out -j$(nproc) \
         CC=clang \
         CXX=clang++ \
         LD=ld.lld \

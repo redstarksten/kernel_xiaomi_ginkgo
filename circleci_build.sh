@@ -4,6 +4,7 @@ echo "Clone Anykernel and GCC"
 git clone -j32 https://github.com/redstarksten/AnyKernel -b master AnyKernel
 git clone -j32 --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 --depth=1 https://github.com/NusantaraDevs/clang clang
+cmake -DCMAKE_PREFIX_PATH=${LLVM_PREFIX}/lib/cmake/llvm ../llvm_git/polly
 echo "Done"
 token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 chat_id="513350521"

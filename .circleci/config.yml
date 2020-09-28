@@ -2,9 +2,9 @@ version: 2.1
 jobs:
   compile:
    docker:
+      - image: ubuntu:18.04
    parallelism: 4
    resource_class: large
-      - image: ubuntu:18.04
    steps:
       - run:
           command: |

@@ -4,7 +4,7 @@ jobs:
    docker:
       - image: ubuntu:18.04
    parallelism: 4
-   resource_class: large
+   resource_class: medium+
    steps:
       - run:
           command: |

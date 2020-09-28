@@ -26,7 +26,7 @@ export KBUILD_BUILD_HOST=Circleci
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-                        -d sticker="CAACAgUAAxkBAAEBYwdfcdjMBHaeflTtVwecvlSAqsmr4QACDQADwNuQOQiEVU5cMCFHGwQ" \
+                        -d sticker="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1BCmgcEbGwQ" \
                         -d chat_id=$chat_id
 }
 # Stiker Error
@@ -95,20 +95,19 @@ make -j$(nproc --all) O=out \
 }
 # Zipping
 function zipping() {
-        cd AnyKernel
-        cat $IMAGE $DTB > Anykernel/Image.gz-dtb
+        cat $IMAGE $DTB > Anykernel/Image.gz-dtb && cd AnyKernel
         zip -r9 unsigned.zip *
-        mv unsigned.zip ../signer/
-        cd ..
+        cp unsigned.zip ../signer/ && cd ..
 }
 # Signing
 function signer() {
-    if [[ -f "$KERNEL_DIR/signer/unsigned.zip" ]]; then
+    if [[ -f $(pwd)/signer/unsigned.zip ]]; then
         cd signer
         java -jar zipsigner-3.0.jar \
         unsigned.zip $ZIPNAME-signed.zip
     fi
 }
+sticker
 sendinfo
 compile
 zipping
@@ -117,4 +116,4 @@ END=$(date +"%s")
 DIFF=$(($END - $START))
 paste
 push
-sticker
+

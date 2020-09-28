@@ -5,7 +5,7 @@ git clone https://github.com/redstarksten/kernel_xiaomi_ginkgo.git ginkgo
 git clone https://github.com/redstarksten/Anykernel.git AnyKernel
 git clone https://github.com/NusantaraDevs/clang.git clang
 echo "Done"
-token=$(openssl enc -base64 -d <<< MTI5MDc5MjQxNDpBQUY4QWJQVWc4QkpQcG5rVjhLTUV5ZW5FNnlZeW1od0ljZw==)
+token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 chat_id="-1001460435505"
 tanggal=$(TZ=Asia/Jakarta date +'%H%M-%d%m%y')
 START=$(date +"%s")
@@ -98,11 +98,11 @@ function zipping() {
         zip -r9 $ZIPNAME-${tanggal}.zip *
         cd ..
 }
-#sendinfo
+sendinfo
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
-#paste
-#push
-#sticker
+paste
+push
+sticker

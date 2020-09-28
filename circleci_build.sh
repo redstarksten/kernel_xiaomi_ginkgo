@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 echo "Clone Anykernel and GCC"
+apt-get update -y && apt-get upgrade -y
+apt-get install python3 git cmake clang-format clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
 git clone -j32 https://github.com/redstarksten/AnyKernel -b master AnyKernel
-git clone -j32 --depth=1 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
-git clone -j32 --depth=1 https://github.com/NusantaraDevs/clang clang
-cmake -DCMAKE_PREFIX_PATH=${LLVM_PREFIX}/lib/cmake/llvm ../llvm_git/polly
+git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
+git clone -j32 https://github.com/NusantaraDevs/clang clang
 echo "Done"
 token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 chat_id="513350521"
@@ -19,12 +20,12 @@ export KBUILD_BUILD_HOST=Circleci
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
-                        -d sticker="CAACAgUAAx0CUPRqKwACFWRellg9L_iFa20dCci4wyL0Pr2xKgACJQEAAna2lSii1C6TeMVizRgE" \
+                        -d sticker="CAACAgUAAxkBAAEBYwdfcdjMBHaeflTtVwecvlSAqsmr4QACDQADwNuQOQiEVU5cMCFHGwQ" \
                         -d chat_id=$chat_id
 }
 # Stiker Error
 function stikerr() {
-	curl -s -F chat_id=$chat_id -F sticker="CAACAgQAAx0CUPRqKwACFWBellgcUeTWUj_MRWJLz6Czd9cokwACUwwAAskpHQ8go8px5eh4ihgE" https://api.telegram.org/bot$token/sendSticker
+	curl -s -F chat_id=$chat_id -F sticker="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ" https://api.telegram.org/bot$token/sendSticker
 }
 # Send info plox channel
 function sendinfo() {

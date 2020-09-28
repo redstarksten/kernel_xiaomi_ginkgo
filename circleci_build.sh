@@ -44,9 +44,8 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
-        cd AnyKernel
-	ZIP=$(echo StarkX-Kernel-*.zip)
-	curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
+        cd signer
+	curl -F document=@$ZIPNAME.signed.zip "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -99,15 +98,9 @@ function zipping() {
         cd AnyKernel
         zip -r9 unsigned.zip *
         mv unsigned.zip ../signer/
-        cd ..
-}
-# Signing
-function signer() {
-    if [[ -f $(pwd)/signer/unsigned.zip ]]; then
-        cd signer
-        java -jar zipsigner-3.0.jar \
-        unsigned.zip $ZIPNAME-signed.zip
-    fi
+        cd ../signer
+        java -jar zipsigner-3.0.jar unsigned.zip $ZIPNAME-signed.zip
+        ZIP_FINAL=$ZIPNAME-signed.zip
 }
 sendinfo
 compile

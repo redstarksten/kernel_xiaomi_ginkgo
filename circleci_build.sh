@@ -20,6 +20,7 @@ DEVICE="Ginkgo"
 ZIPNAME="$KERNEL-$DEVICE-${tanggal}"
 export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"
 export ARCH=arm64
+export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=Circleci
 # sticker plox

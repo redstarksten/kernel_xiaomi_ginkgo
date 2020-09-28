@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   compile:
+  parallelism: 4
     resource_class: large
    docker:
       - image: ubuntu:18.04

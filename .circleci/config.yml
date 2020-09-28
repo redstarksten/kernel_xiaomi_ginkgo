@@ -1,21 +1,9 @@
-version: 2.1
+version: 2
 jobs:
-  compile:
-   docker:
-      - image: ubuntu:18.04
-   parallelism: 4
-   steps:
-      - run:
-          command: |
-           apt-get -y update && apt-get -y upgrade && apt-get -y install wget python3 git bc clang-format clang-tidy clang-tools clang libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
-           pip3 install psutil
-           git config --global user.name "redstarksten"
-           git config --global user.email "mahadewanto2@gmail.com"
-           git config --global color.ui false
-           wget https://raw.githubusercontent.com/redstarksten/kernel_xiaomi_ginkgo/10.0/circleci_build.sh
-           bash circleci_build.sh
-workflows:
-  version: 2.1
-  cooking:
-    jobs:
-      - compile 
+  build:
+    docker:
+      - image: movecrew/oven:latest
+    steps:
+      - checkout
+      - run: wget https://raw.githubusercontent.com/redstarksten/kernel_xiaomi_ginkgo/10.0/circleci_build.sh
+      - run: bash circleci_build.sh

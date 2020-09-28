@@ -15,14 +15,15 @@ chat_id="513350521"
 GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
-KERNEL="StarkX"
-DEVICE="Ginkgo"
-ZIPNAME="$KERNEL-$DEVICE-${tanggal}"
+ZIPNAME="StarkX-Ginkgo-${tanggal}"
+mkdir $(pwd)/temp
+export TEMP=$(pwd)/temp
 export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=Circleci
+export PUSHZIP=$(pwd)/AnyKernel
 # sticker plox
 function sticker() {
         echo "Send Sticker"
@@ -49,7 +50,7 @@ function sendinfo() {
 function push() {
         echo - "Push flashable zip to telegram"
         cd Anykernel
-	curl -F document=@"/root/Anykernel/$ZIPNAMPE.zip" "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@$(echo $PUSHZIP/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -58,7 +59,7 @@ function push() {
 # Function upload logs to my own TELEGRAM paste
 function paste() {
         echo "Create log"
-        cat build.log | curl -F document=@build.log "https://api.telegram.org/bot$token/sendDocument" \
+        cat $TEMP/build.log | curl -F document=@$(echo $TEMP/*.log) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" 
@@ -90,7 +91,7 @@ make -j$(nproc --all) O=out \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-gnu- \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                      Image.gz-dtb | tee build.log
+                      Image.gz-dtb | tee $TEMP/build.log
 
             if ! [ -a $IMAGE ]; then
                 finerr

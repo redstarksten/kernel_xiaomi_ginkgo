@@ -13,10 +13,14 @@ KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
 CONFIG=vendor/ginkgo-perf_defconfig
+export ARCH=arm64
+export SUBARCH=arm64
 export KBUILD_BUILD_USER=bukandewa
 export KBUILD_BUILD_HOST=desktop
 export PATH="$HOME/clang/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/clang/lib:$LD_LIBRARY_PATH"
+export CROSS_COMPILE=$HOME/clang/bin/aarch64-linux-android-
+export CROSS_COMPILE_ARM32=$HOME/clang/bin/arm-linux-androideabi-
 # sticker plox
 function sticker() {
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \

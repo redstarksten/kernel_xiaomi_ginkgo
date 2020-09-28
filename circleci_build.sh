@@ -64,9 +64,13 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        cd ginkgo
-make O=out ARCH=arm64 $CONFIG
-make -j$(nproc --all) O=out \
+cd ginkgo
+        make clean && make mrproper && make distclean
+        make -j$(nproc) O=out $CONFIG
+echo -e  "==========================================="
+echo -e "Compile kernel process...:"
+echo -e  "===========================================\n"
+        make O=out -j$(nproc) \
         CC=clang \
         CXX=clang++ \
         LD=ld.lld \

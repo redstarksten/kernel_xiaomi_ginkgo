@@ -30,7 +30,7 @@ export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=ServerCI
-export PUSHZIP=$(pwd)/AnyKernel
+export PUSHZIP=$(pwd)/AnyKernel/$ZIPNAME.signed.zip
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 # sticker plox
@@ -57,7 +57,7 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
-        cd Anykernel
+        cd signer
 	curl -F document=@$(echo $PUSHZIP/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \

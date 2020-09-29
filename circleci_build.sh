@@ -1,29 +1,38 @@
 #!/usr/bin/env bash
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
-DTB=$(pwd)/out/arch/arm64/boot/dts/qcom/*.dtb
+KERNEL_DIR="/root/project"
+IMAGE=Image.gz-dtb
+CONFIG="vendor/ginkgo-perf_defconfig"
+IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
+ANY_IMG="$KERNEL_DIR/Anykernel/$IMAGE"
+DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb"
+tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
+START=$(date +"%s")
+KERNEL_NAME="StarkX"
+DEVICE="Ginkgo"
+ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
+mkdir $(pwd)/temp
 echo "Clone Anykernel and GCC"
 apt-get update -y && apt-get upgrade -y
 apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
 git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
-# mkdir signer \
-# curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
-git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
+mkdir signer
+curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
+# git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 https://github.com/NusantaraDevs/clang clang
 echo "Done"
-token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
-chat_id="513350521"
-GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
-tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
-START=$(date +"%s")
-ZIPNAME="StarkX-Ginkgo-${tanggal}"
-mkdir $(pwd)/temp
+# GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+export token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
+export chat_id="513350521"
 export TEMP=$(pwd)/temp
-export LD_LIBRARY_PATH="/root/clang/bin/../lib:$PATH"
+export PATH="/root/clang/bin:$PATH"
+export LD_LIBRARY_PATH="/root/clang/lib:$LD_LIBRARY_PATH"
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
-export KBUILD_BUILD_HOST=Circleci
+export KBUILD_BUILD_HOST=ServerCI
 export PUSHZIP=$(pwd)/AnyKernel
+git config --global user.email "mahadewanto2@gmail.com"
+git config --global user.name "bukandewa"
 # sticker plox
 function sticker() {
         echo "Send Sticker"
@@ -48,7 +57,6 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
-        echo - "Push flashable zip to telegram"
         cd Anykernel
 	curl -F document=@$(echo $PUSHZIP/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
@@ -58,7 +66,6 @@ function push() {
 }
 # Function upload logs to my own TELEGRAM paste
 function paste() {
-        echo "Create log"
         cat $TEMP/build.log | curl -F document=@$(echo $TEMP/*.log) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
@@ -66,7 +73,6 @@ function paste() {
 }
 # Fin Error
 function finerr() {
-        echo "Send Error Message"
         paste
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
 			-d chat_id="$chat_id" \
@@ -76,9 +82,8 @@ function finerr() {
 }
 # Compile plox
 function compile() {
-        echo "Compile Process. Please Wait..."
-make O=out ARCH=arm64 vendor/ginkgo-perf_defconfig
-PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
+make O=out ARCH=arm64 $CONFIG
+# PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \
                       ARCH=arm64 \
                       CC=clang \
@@ -91,26 +96,37 @@ make -j$(nproc --all) O=out \
                       CLANG_TRIPLE=aarch64-linux-gnu- \
                       CROSS_COMPILE=aarch64-linux-gnu- \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-                      Image.gz-dtb | tee $TEMP/build.log
+                      $IMAGE | tee $TEMP/build.log
 
-            if ! [ -a $IMAGE ]; then
+        if ! [ -a $IMG_DIR ]; then
                 finerr
 		stikerr
                 exit 1
-            fi
-        cp $IMAGE AnyKernel/Image.gz-dtb
+        fi
+        cp $IMG_DIR AnyKernel/$IMAGE
 }
 # Zipping
 function zipping() {
-        echo "Zipping Image.gz-dtb using Anykernel"
-        cat $IMAGE $DTB > Anykernel/Image.gz-dtb
+        if ! [[ -f "$ANY_IMG" ]]; then
+        cat $ANY_IMG $DTB > Anykernel/$IMAGE
         cd AnyKernel
-        zip -r9 $ZIPNAME.zip *
+        zip -r9 unsigned.zip *
+        mv unsigned.zip ../signer
         cd ..
+        fi
+}
+#signer
+function signer() {
+        if [[ -f "/root/signer/unsigned.zip" ]]; then
+        cd signer
+        java -jar zipsigner-3.0.jar \
+        unsigned.zip $ZIPNAME-signed.zip
+        fi
 }
 sendinfo
 compile
 zipping
+signer
 END=$(date +"%s")
 DIFF=$(($END - $START))
 paste

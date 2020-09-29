@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 KERNEL_DIR="/root/project"
 IMAGE=Image.gz-dtb
-CONFIG=full-LTO_defconfig
+CONFIG=gingkgo-perf_defconfig
 IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
 ANY_DIR="$KERNEL_DIR/Anykernel"
 ANY_IMG="$ANY_DIR/$IMAGE"

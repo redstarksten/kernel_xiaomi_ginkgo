@@ -27,7 +27,7 @@ KERNEL_NAME=StarkX
 KERNEL_VER=Mars
 TANGGAL=$(date '+%Y%m%d'-'%H%M')
 ZIPNAME="$KERNEL_NAME"-"$KERNEL_VER"-"$TANGGAL"
-CONFIG=full-LTO_defconfig
+CONFIG=vendor/ginkgo-perf_defconfig
 
 function checker() {
     CHECK1=$KERNEL_DIR/out

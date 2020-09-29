@@ -3,14 +3,14 @@ KERNEL_DIR="/root/project"
 IMAGE=Image.gz-dtb
 CONFIG=vendor/ginkgo-perf_defconfig
 START=$(date +"%s")
-KERNEL_NAME="StarkX"
-DEVICE="Ginkgo"
-ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
-IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
-ANY_DIR="$KERNEL_DIR/Anykernel"
-ANY_IMG="$ANY_DIR/$IMAGE"
-DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb"
-SIGNER_DIR="$KERNEL_DIR/signer"
+KERNEL_NAME=StarkX
+DEVICE=Ginkgo
+ZIPNAME=$KERNEL_NAME-$DEVICE-${tanggal}
+IMG_DIR=$KERNEL_DIR/out/arch/arm64/boot/$IMAGE
+ANY_DIR=$KERNEL_DIR/Anykernel
+ANY_IMG=$ANY_DIR/$IMAGE
+DTB=$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb
+SIGNER_DIR=$KERNEL_DIR/signer
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 mkdir $(pwd)/temp
 echo -e "   #############################################"
@@ -82,7 +82,7 @@ function push() {
         echo -e "#                                           #"
         echo -e "############################################"
         cd $SIGNER_DIR
-	curl -F document=@$(echo $SIGNER_DIR/$ZIPNAME.signed.zip) "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@$(echo "$SIGNER_DIR/$ZIPNAME.signed.zip") "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -137,12 +137,12 @@ make -j$(nproc --all) O=out \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                       $IMAGE | tee $TEMP/build.log
 
-        if ! [ -a $IMG_DIR ]; then
+        if ! [[ -a "$IMG_DIR" ]]; then
                 finerr
 		stikerr
                 exit 1
         fi
-        mv $IMG_DIR $ANY_IMG && cd $ANY_DIR
+        mv "$IMG_DIR" "$ANY_IMG" && cd "$ANY_DIR"
 }
 # Zipping
 function zipping() {
@@ -152,9 +152,9 @@ function zipping() {
         echo -e "#                                           #"
         echo -e "############################################"
         if ! [[ -f "$ANY_IMG" ]]; then
-        cat $ANY_IMG $DTB > $ANY_IMG
+        cat "$ANY_IMG" "$DTB" > "$ANY_IMG"
         zip -r9 unsigned.zip *
-        mv unsigned.zip $SIGNER_DIR && cd ..
+        mv unsigned.zip "$SIGNER_DIR" && cd ..
         else
         echo -e "Failed!"
         fi
@@ -169,7 +169,7 @@ function signer() {
         if ! [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
         cd signer
         java -jar zipsigner-3.0.jar \
-        unsigned.zip $ZIPNAME-signed.zip
+        unsigned.zip "$ZIPNAME-signed.zip"
         rm unsigned.zip
         else
         echo -e "Failed!"

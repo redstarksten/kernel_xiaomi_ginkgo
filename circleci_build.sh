@@ -2,17 +2,16 @@
 KERNEL_DIR="/root/project"
 IMAGE=Image.gz-dtb
 CONFIG=vendor/ginkgo-perf_defconfig
+START=$(date +"%s")
+KERNEL_NAME="StarkX"
+DEVICE="Ginkgo"
+ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
 IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
 ANY_DIR="$KERNEL_DIR/Anykernel"
 ANY_IMG="$ANY_DIR/$IMAGE"
 DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb"
 SIGNER_DIR="$KERNEL_DIR/signer"
-FINAL_ZIP="$SIGNER_DIR/$ZIPNAME.signed.zip"
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
-START=$(date +"%s")
-KERNEL_NAME="StarkX"
-DEVICE="Ginkgo"
-ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
 mkdir $(pwd)/temp
 echo -e "   #############################################"
 echo -e "  #                                           #"
@@ -38,7 +37,7 @@ export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=ServerCI
 export PATH="/usr/lib/ccache:$PATH"
 export USE_CCACHE=1
-export CCACHE_DIR=$HOME/.ccache
+export CCACHE_DIR=/root/.ccache
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 # sticker plox
@@ -83,7 +82,7 @@ function push() {
         echo -e "#                                           #"
         echo -e "############################################"
         cd $SIGNER_DIR
-	curl -F document=@$(echo $FINAL_ZIP) "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@$(echo $SIGNER_DIR/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \

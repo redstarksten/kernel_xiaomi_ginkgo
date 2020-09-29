@@ -82,7 +82,7 @@ function push() {
         echo -e "#                                           #"
         echo -e "############################################"
         cd $SIGNER_DIR
-	curl -F document=@$(echo $SIGNER_DIR/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
+	curl -F document=@$(echo $SIGNER_DIR/$ZIPNAME.signed.zip) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -142,7 +142,7 @@ make -j$(nproc --all) O=out \
 		stikerr
                 exit 1
         fi
-        cp $IMG_DIR $ANY_IMG
+        mv $IMG_DIR $ANY_IMG && cd $ANY_DIR
 }
 # Zipping
 function zipping() {
@@ -153,9 +153,10 @@ function zipping() {
         echo -e "############################################"
         if ! [[ -f "$ANY_IMG" ]]; then
         cat $ANY_IMG $DTB > $ANY_IMG
-        cd $ANY_DIR
         zip -r9 unsigned.zip *
-        mv unsigned.zip $SIGNER_DIR && cd
+        mv unsigned.zip $SIGNER_DIR && cd ..
+        else
+        echo -e "Failed!"
         fi
 }
 #signer
@@ -165,11 +166,13 @@ function signer() {
         echo -e " #           Signing Zip Process...          #"
         echo -e "#                                           #"
         echo -e "############################################"
-        if [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
-        cd $SIGNER_DIR
+        if ! [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
+        cd signer
         java -jar zipsigner-3.0.jar \
         unsigned.zip $ZIPNAME-signed.zip
-        rm unsigned.zip && cd
+        rm unsigned.zip
+        else
+        echo -e "Failed!"
         fi
 }
 sendinfo

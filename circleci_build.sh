@@ -1,26 +1,32 @@
 #!/usr/bin/env bash
 KERNEL_DIR="/root/project"
 IMAGE=Image.gz-dtb
-CONFIG="vendor/ginkgo-perf_defconfig"
+CONFIG=full-LTO_defconfig
 IMG_DIR="$KERNEL_DIR/out/arch/arm64/boot/$IMAGE"
-ANY_IMG="$KERNEL_DIR/Anykernel/$IMAGE"
+ANY_DIR="$KERNEL_DIR/Anykernel"
+ANY_IMG="$ANY_DIR/$IMAGE"
 DTB="$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb"
+SIGNER_DIR="$KERNEL_DIR/signer"
+FINAL_ZIP="$SIGNER_DIR/$ZIPNAME.signed.zip"
 tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
 KERNEL_NAME="StarkX"
 DEVICE="Ginkgo"
 ZIPNAME="$KERNEL_NAME-$DEVICE-${tanggal}"
 mkdir $(pwd)/temp
-echo "Clone Anykernel and GCC"
+echo -e "   #############################################"
+echo -e "  #                                           #"
+echo -e " # Update, Clone Clang, Install Dependencies #"
+echo -e "#                                           #"
+echo -e "############################################"
 apt-get update -y && apt-get upgrade -y
 apt-get install -y python3 git cmake clang-format default-jre clang-tidy clang-tools clang clangd libc++-dev libc++1 libc++abi-dev libc++abi1 libclang-dev libclang1 liblldb-dev libllvm-ocaml-dev libomp-dev libomp5 lld lldb llvm-dev llvm-runtime llvm python-clang build-essential make bzip2 libncurses5-dev lld libssl-dev python3-pip ninja-build
-git clone -j32 https://github.com/redstarksten/AnyKernel AnyKernel
-mkdir signer
-curl -sLo signer/zipsigner-3.0.jar https://raw.githubusercontent.com/najahiiii/Noob-Script/noob/bin/zipsigner-3.0.jar
-# git clone -j32 https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 toolchain
 git clone -j32 https://github.com/NusantaraDevs/clang clang
-echo "Done"
-# GCC="$(pwd)/gcc/bin/aarch64-linux-gnu-"
+echo -e "   #############################################"
+echo -e "  #                                           #"
+echo -e " #       All Done! Continue Process...       #"
+echo -e "#                                           #"
+echo -e "############################################"
 export token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 export chat_id="513350521"
 export TEMP=$(pwd)/temp
@@ -30,24 +36,38 @@ export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=ServerCI
-export PUSHZIP=$(pwd)/AnyKernel/$ZIPNAME.signed.zip
+export PATH="/usr/lib/ccache:$PATH"
+export USE_CCACHE=1
+export CCACHE_DIR=$HOME/.ccache
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 # sticker plox
 function sticker() {
-        echo "Send Sticker"
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #             Send Sticker Success!         #"
+        echo -e "#                                           #"
+        echo -e "############################################"
         curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
                         -d sticker="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1BCmgcEbGwQ" \
                         -d chat_id=$chat_id
 }
 # Stiker Error
 function stikerr() {
-        echo "Send Stiker Error"
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #             Send Sticker Error!           #"
+        echo -e "#                                           #"
+        echo -e "############################################"
 	curl -s -F chat_id=$chat_id -F sticker="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ" https://api.telegram.org/bot$token/sendSticker
 }
 # Send info plox channel
 function sendinfo() {
-        echo "Sending Information About New Update"
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #               Sendinfo...                 #"
+        echo -e "#                                           #"
+        echo -e "############################################"
         PATH="/root/clang/bin:${PATH}"
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
                         -d chat_id=$chat_id \
@@ -57,8 +77,13 @@ function sendinfo() {
 }
 # Push kernel to channel
 function push() {
-        cd signer
-	curl -F document=@$(echo $PUSHZIP/*.zip) "https://api.telegram.org/bot$token/sendDocument" \
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #          Push Message to Telegram!        #"
+        echo -e "#                                           #"
+        echo -e "############################################"
+        cd $SIGNER_DIR
+	curl -F document=@$(echo $FINAL_ZIP) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -66,6 +91,11 @@ function push() {
 }
 # Function upload logs to my own TELEGRAM paste
 function paste() {
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #                Paste Log!                 #"
+        echo -e "#                                           #"
+        echo -e "############################################"
         cat $TEMP/build.log | curl -F document=@$(echo $TEMP/*.log) "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
@@ -73,6 +103,11 @@ function paste() {
 }
 # Fin Error
 function finerr() {
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #             Paste Log Error!              #"
+        echo -e "#                                           #"
+        echo -e "############################################"
         paste
         curl -X POST "https://api.telegram.org/bot$token/sendMessage" \
 			-d chat_id="$chat_id" \
@@ -82,6 +117,11 @@ function finerr() {
 }
 # Compile plox
 function compile() {
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #          Compile Kernel Process...        #"
+        echo -e "#                                           #"
+        echo -e "############################################"
 make O=out ARCH=arm64 $CONFIG
 # PATH="${PWD}/bin:${PWD}/toolchain/bin:${PATH}:${PWD}/clang/bin:${PATH}" \
 make -j$(nproc --all) O=out \
@@ -103,24 +143,34 @@ make -j$(nproc --all) O=out \
 		stikerr
                 exit 1
         fi
-        cp $IMG_DIR AnyKernel/$IMAGE
+        cp $IMG_DIR $ANY_IMG
 }
 # Zipping
 function zipping() {
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #           Zipping To Anykernel...         #"
+        echo -e "#                                           #"
+        echo -e "############################################"
         if ! [[ -f "$ANY_IMG" ]]; then
-        cat $ANY_IMG $DTB > Anykernel/$IMAGE
-        cd AnyKernel
+        cat $ANY_IMG $DTB > $ANY_IMG
+        cd $ANY_DIR
         zip -r9 unsigned.zip *
-        mv unsigned.zip ../signer
-        cd ..
+        mv unsigned.zip $SIGNER_DIR && cd
         fi
 }
 #signer
 function signer() {
-        if [[ -f "/root/signer/unsigned.zip" ]]; then
-        cd signer
+        echo -e "   #############################################"
+        echo -e "  #                                           #"
+        echo -e " #           Signing Zip Process...          #"
+        echo -e "#                                           #"
+        echo -e "############################################"
+        if [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
+        cd $SIGNER_DIR
         java -jar zipsigner-3.0.jar \
         unsigned.zip $ZIPNAME-signed.zip
+        rm unsigned.zip && cd
         fi
 }
 sendinfo

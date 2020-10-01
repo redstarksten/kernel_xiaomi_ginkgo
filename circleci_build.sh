@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 Image=Image.gz-dtb
 CONFIG=vendor/ginkgo-perf_defconfig
-Img_Dir=$(pwd)/out/arch/arm64/boot/$Image
-Any_Dir=$(pwd)/Anykernel
-Any_Img=$Any_Dir/$Image
-Dtb=$(pwd)/out/arch/arm64/boot/dts/qcom/*.dtb
-Signer_Dir=$(pwd)/signer
-Final_Zip=$Signer_Dir/$Zipname.signed.zip
-tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
 START=$(date +"%s")
-Kernel_Name=StarkX
-Device=Ginkgo
-Zipname=$Kernel_Name-$Device-${tanggal}
+KERNEL_NAME=StarkX
+DEVICE=Ginkgo
+ZIPNAME=$KERNEL_NAME-$DEVICE-${tanggal}
+IMG_DIR=$KERNEL_DIR/out/arch/arm64/boot/$IMAGE
+ANY_DIR=$KERNEL_DIR/Anykernel
+ANY_IMG=$ANY_DIR/$IMAGE
+DTB=$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtb
+SIGNER_DIR=$KERNEL_DIR/signer
+tanggal=$(TZ=Asia/Jakarta date "+%Y%m%d-%H%M")
+mkdir $(pwd)/temp
 echo -e "   #############################################"
 echo -e "  #                                           #"
 echo -e " #             Dependencies...               #"
@@ -36,7 +36,7 @@ export KBUILD_BUILD_USER=Bukandewa
 export KBUILD_BUILD_HOST=ServerCI
 export PATH="/usr/lib/ccache:$PATH"
 export USE_CCACHE=1
-export CCACHE_DIR=$HOME/.ccache
+export CCACHE_DIR=/root/.ccache
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 # sticker plox
@@ -80,9 +80,9 @@ function push() {
         echo -e "  #                                           #"
         echo -e " #          Push Message to Telegram!        #"
         echo -e "#                                           #"
-        echo -e "############################################\n"
-        cd $Signer_Dir
-	curl -F document=@$(echo "$Zipname-signed.zip") "https://api.telegram.org/bot$token/sendDocument" \
+        echo -e "############################################"
+        cd $SIGNER_DIR
+	curl -F document=@$(echo "$SIGNER_DIR/$ZIPNAME.signed.zip") "https://api.telegram.org/bot$token/sendDocument" \
 			-F chat_id="$chat_id" \
 			-F "disable_web_page_preview=true" \
 			-F "parse_mode=html" \
@@ -146,11 +146,12 @@ make -j$(nproc --all) O=out \
                       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
                       $Image | tee $TEMP/build.log
 
-        if ! [ -a $Img_Dir ]; then
+        if ! [[ -a "$IMG_DIR" ]]; then
                 finerr
 		stikerr
                 exit 1
         fi
+        mv "$IMG_DIR" "$ANY_IMG" && cd "$ANY_DIR"
 }
 # Zipping
 function zipping() {
@@ -160,11 +161,13 @@ function zipping() {
         echo -e "  #                                           #"
         echo -e " #           Zipping To Anykernel...         #"
         echo -e "#                                           #"
-        echo -e "############################################\n"
-        if ! [[ -f $Any_Img ]]; then
-        cd $Any_Dir
+        echo -e "############################################"
+        if ! [[ -f "$ANY_IMG" ]]; then
+        cat "$ANY_IMG" "$DTB" > "$ANY_IMG"
         zip -r9 unsigned.zip *
-        mv unsigned.zip $Signer_Dir && cd ..
+        mv unsigned.zip "$SIGNER_DIR" && cd ..
+        else
+        echo -e "Failed!"
         fi
 }
 #signer
@@ -173,14 +176,14 @@ function signer() {
         echo -e "  #                                           #"
         echo -e " #           Signing Zip Process...          #"
         echo -e "#                                           #"
-        echo -e "############################################\n"
-        if [[ -f $Signer_Dir/unsigned.zip ]]; then
-        cd $Signer_Dir
+        echo -e "############################################"
+        if ! [[ -f "$SIGNER_DIR/unsigned.zip" ]]; then
+        cd signer
         java -jar zipsigner-3.0.jar \
-        unsigned.zip $Zipname-signed.zip
-        rm unsigned.zip && cd
+        unsigned.zip "$ZIPNAME-signed.zip"
+        rm unsigned.zip
         else
-        echo "Failed!"
+        echo -e "Failed!"
         fi
 }
 #compile

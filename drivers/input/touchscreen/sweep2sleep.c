@@ -183,7 +183,7 @@ static void s2s_input_event(struct input_handle *handle, unsigned int type,
 }
 
 static int input_dev_filter(struct input_dev *dev) {
-	if (strstr(dev->name, "synaptics,s3320")) {
+	if (strstr(dev->name, "ft8719_spi_c3j,nt36xxx_spi_c3j")) {
 		return 0;
 	} else {
 		return 1;

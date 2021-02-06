@@ -78,7 +78,7 @@ export CCACHE_DIR="$HOME/.ccache"
 #config global
 git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
-git config --global user.signingkey C9F589F7D1A390DC
+git config --global user.signingkey F14470B7A98EBDF2600BBD9616334271F7E45334
 
 # sticker plox
 function sticker() {
@@ -129,7 +129,7 @@ function image() {
 
 <b>StarkX-R Kernel for A11</b>
 Filename: StarkX-R-RN8-20210130-2315-signed.zip
-Filesize: 18.6 MB
+Filesize: 18.5 MB
 ZIP sha1: '$sha1'
 <a href='$link'>Download Here</a>
 
@@ -143,8 +143,7 @@ ZIP sha1: '$sha2'
 
 - Dont forget to backup boot and dtbo image before flash the kernel!
 - Just flash, wipe dalvik cache then reboot
-- Tested on MIUI Eu 21.1.28 (decrypted).
-- Currently using MIUI based for my daily use, not tested on AOSP/CAF/OOS. Any feedback is very usefull for better compatibilities and supports in the next release."
+- Tested on MIUI Eu 21.1.28 (decrypted)."
 
 rm -rf $SIGNER_DIR/*.zip
 }
@@ -211,7 +210,7 @@ function signer() {
         $(echo sha1sum ${ZIPNAME}-signed.zip) | grep -Eo '^[^ ]+' | tee $EXTRA/sha1.txt
         sha1=$(echo $(cat $EXTRA/sha1.txt))
         sha2=$(echo $(cat $EXTRA/sha2.txt))
-        rm -rf unsigned.zip && cd ../telegram.sh       
+        rm -rf unsigned.zip && cd ../telegram      
         else
         echo -e "Failed!"
         fi
@@ -223,5 +222,5 @@ signer
 END=$(date +"%s")
 DIFF=$(($END - $START))
 upload
-#image
+image
 sticker

@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.14.217 Kernel Configuration StarkX-R Kernel
+# Linux/arm64 4.14.219 Kernel Configuration StarkX-R Kernel
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -2040,7 +2040,6 @@ CONFIG_PPP_ASYNC=y
 CONFIG_PPP_SYNC_TTY=y
 # CONFIG_SLIP is not set
 CONFIG_SLHC=y
-CONFIG_USB=y
 CONFIG_USB_NET_DRIVERS=y
 # CONFIG_USB_CATC is not set
 # CONFIG_USB_KAWETH is not set
@@ -5263,7 +5262,6 @@ CONFIG_NVMEM_SPMI_SDAM=y
 # CONFIG_TEE is not set
 CONFIG_SENSORS_SSC=y
 # CONFIG_ESOC is not set
-# CONFIG_AINUR_DTS_SW is not set
 
 #
 # Firmware Drivers

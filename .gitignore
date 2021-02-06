@@ -129,6 +129,3 @@ kernel/configs/android-*.cfg
 
 # build out dir
 out/
-
-# build script
-*.sh

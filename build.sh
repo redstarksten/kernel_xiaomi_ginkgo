@@ -104,7 +104,7 @@ function upload() {
 	echo -e "Upload to Gdrive Folder...."	
 	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
 	echo -e ""
-	gdrive upload --share $(echo ${SIGNER_DIR}/${ZIPNAME}-signed.zip) | tee ${EXTRA}/link.txt
+	gdrive upload --share $(echo ${SIGNER_DIR}/${ZIPNAME}-signed.zip) | tee ${EXTRA}/link2.txt
 	link2=$(echo $(cat /home/bukandewa/Extra/link2.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
 }	
 #send image and caption info
@@ -206,8 +206,7 @@ function signer() {
         if [[ -f ${SIGNER_DIR}/unsigned.zip ]]; then
         cd signer
         java -jar zipsigner-3.0.jar unsigned.zip ${ZIPNAME}-signed.zip
-        $(echo sha1sum ${ZIPNAME}-signed.zip) | grep -Eo '^[^ ]+' | tee $EXTRA/sha1.txt
-        sha2=$(echo $(cat $EXTRA/sha2.txt))
+        $(echo sha1sum ${ZIPNAME}-signed.zip) | grep -Eo '^[^ ]+' | tee $EXTRA/sha2.txt
         rm -rf unsigned.zip && cd ../telegram      
         else
         echo -e "Failed!"

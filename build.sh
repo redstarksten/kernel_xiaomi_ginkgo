@@ -4,7 +4,7 @@ EXTRA=$HOME/Extra
 START=$(date +"%s")
 tanggal=$(TZ=Asia/Jakarta date '+%Y%m%d'-'%H%M')
 KERNEL_DIR=$HOME/kernel_xiaomi_ginkgo
-KERNEL_NAME=StarkX-R
+KERNEL_NAME=StarkX-Q
 KERNEL_VERSION=$(make kernelversion)
 DEVICE=RN8
 ZIPNAME=${KERNEL_NAME}-${DEVICE}-${tanggal}

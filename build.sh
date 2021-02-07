@@ -79,24 +79,6 @@ git config --global user.email "mahadewanto2@gmail.com"
 git config --global user.name "bukandewa"
 git config --global user.signingkey F14470B7A98EBDF2600BBD9616334271F7E45334
 
-# sticker plox
-function sticker() {
-	echo -e ""
-	echo -e "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
-	echo -e "Send sticker success!"  	
-	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
-	echo -e ""
-        ./telegram -s ${sticker_id}
-}
-# Stiker Error
-function stikerr() {
-	echo -e ""
-	echo -e "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
-	echo -e "Send sticker error!"  	
-	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
-	echo -e ""
-	./telegram -s ${stickerr_id}
-}
 #Upload to gdrive
 function upload() {
 	echo -e ""
@@ -105,47 +87,8 @@ function upload() {
 	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
 	echo -e ""
 	gdrive upload --share $(echo ${SIGNER_DIR}/${ZIPNAME}-signed.zip) | tee ${EXTRA}/link2.txt
-	link2=$(echo $(cat /home/bukandewa/Extra/link2.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	rm -rf $SIGNER_DIR/*.zip
 }	
-#send image and caption info
-function image() {
-	echo -e ""
-	echo -e "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
-	echo -e "Send image and caption..."  	
-	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
-	echo -e ""
-        ./telegram -i $(echo ${logo}) -H -D \
--T "<b>${KERNEL_NAME}</b> New Update!
-<b>Redmi Note 8/8T A10/A11</b>
-<b>By @bukandewa</b>
-
-<a href='https://t.me/StarkXKernel'>Channel</a> | <a href='https://t.me/StarkXOfficial'>Group</a> | <a href='https://github.com/redstarksten'>Github</a>
-
-<b>Changelog :</b>
-- Upstream to 'v4.14.218' linux stable
-- Bump wireguard v1.0.20210124
-
-<b>StarkX-R Kernel for A11</b>
-Filename: StarkX-R-RN8-20210130-2315-signed.zip
-Filesize: 18.6 MB
-ZIP sha1: '$sha1'
-<a href='$link'>Download Here</a>
-
-<b>StarkX-Q Kernel for A10</b>
-Filename: StarkX-Q-RN8-20210131-0008-signed.zip
-Filesize: 15.6 MB
-ZIP sha1: '$sha2'
-<a href='$link2'>Download Here</a>
-
-<b>Notes :</b>
-
-- Dont forget to backup boot and dtbo image before flash the kernel!
-- Just flash, wipe dalvik cache then reboot
-- Tested on MIUI Eu 21.1.28 (decrypted).
-- Currently using MIUI based for my daily use, not tested on AOSP/CAF/OOS. Any feedback is very usefull for better compatibilities and supports in the next release."
-
-rm -rf $SIGNER_DIR/*.zip
-}
 
 # Compile plox
 function compile() {
@@ -207,7 +150,7 @@ function signer() {
         cd signer
         java -jar zipsigner-3.0.jar unsigned.zip ${ZIPNAME}-signed.zip
         $(echo sha1sum ${ZIPNAME}-signed.zip) | grep -Eo '^[^ ]+' | tee $EXTRA/sha2.txt
-        rm -rf unsigned.zip && cd ../telegram      
+        rm -rf unsigned.zip && cd ../telegram    
         else
         echo -e "Failed!"
         fi
@@ -219,5 +162,3 @@ signer
 END=$(date +"%s")
 DIFF=$(($END - $START))
 upload
-#image
-#sticker

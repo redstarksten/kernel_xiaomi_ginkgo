@@ -104,9 +104,16 @@ function upload() {
 	echo -e "Upload to Gdrive Folder...."	
 	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
 	echo -e ""
+	#fileinfo
 	gdrive upload --share $(echo ${SIGNER_DIR}/${ZIPNAME}-signed.zip) | tee ${EXTRA}/link.txt
-	link=$(echo $(cat /home/bukandewa/Extra/link.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
-	link2=$(echo $(cat /home/bukandewa/Extra/link2.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	link=$(echo $(cat $EXTRA/link.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	link2=$(echo $(cat $EXTRA/link2.txt | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	filename=$(echo $(cat $EXTRA/link.txt | grep -Eo "StarkX[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	filename2=$(echo $(cat $EXTRA/link2.txt | grep -Eo "StarkX[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	filesize=$(echo $(cat $EXTRA/link.txt | grep -Eo "total\s[a-zA-Z0-9./?=_%:-]*\s[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	filesize2=$(echo $(cat $EXTRA/link2.txt | grep -Eo "total\s[a-zA-Z0-9./?=_%:-]*\s[a-zA-Z0-9./?=_%:-]*" | sort -u))
+	sha1=$(echo $(cat $EXTRA/sha1.txt))
+        sha2=$(echo $(cat $EXTRA/sha2.txt))
 }	
 #send image and caption info
 function image() {
@@ -122,27 +129,27 @@ function image() {
 
 <a href='https://t.me/StarkXKernel'>Channel</a> | <a href='https://t.me/StarkXOfficial'>Group</a> | <a href='https://github.com/redstarksten'>Github</a>
 
-<b>Changelog :</b>
-- Upstream to 'v4.14.218' linux stable
+<b><u>Changelog :</u></b>
+- Upstream to 'v4.14.219' linux stable
 - Bump wireguard v1.0.20210124
 
-<b>StarkX-R Kernel for A11</b>
-Filename: StarkX-R-RN8-20210130-2315-signed.zip
-Filesize: 18.5 MB
+<b><u>FILEINFO StarkX-R</u></b>
+Filename: '$filename'
+Filesize: '$filesize'
 ZIP sha1: '$sha1'
-<a href='$link'>Download Here</a>
+Link: <a href='$link'>Download Here</a>
 
-<b>StarkX-Q Kernel for A10</b>
-Filename: StarkX-Q-RN8-20210131-0008-signed.zip
-Filesize: 15.6 MB
+<b><u>FILEINFO StarkX-R</u></b>
+Filename: '$filename2'
+Filesize: '$filesize2'
 ZIP sha1: '$sha2'
-<a href='$link2'>Download Here</a>
+Link: <a href='$link2'>Download Here</a>
 
-<b>Notes :</b>
+<b><u>Notes :</u></b>
 
 - Dont forget to backup boot and dtbo image before flash the kernel!
 - Just flash, wipe dalvik cache then reboot
-- Tested on MIUI Eu 21.1.28 (decrypted)."
+- Tested on MIUI Eu 21.2.24 (decrypted)."
 
 rm -rf $SIGNER_DIR/*.zip
 }
@@ -207,8 +214,6 @@ function signer() {
         cd signer
         java -jar zipsigner-3.0.jar unsigned.zip ${ZIPNAME}-signed.zip
         $(echo sha1sum ${ZIPNAME}-signed.zip) | grep -Eo '^[^ ]+' | tee $EXTRA/sha1.txt
-        sha1=$(echo $(cat $EXTRA/sha1.txt))
-        sha2=$(echo $(cat $EXTRA/sha2.txt))
         rm -rf unsigned.zip && cd ../telegram      
         else
         echo -e "Failed!"

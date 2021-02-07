@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.14.219 Kernel Configuration StarkX-R Kernel
+# Linux/arm64 4.14.220 Kernel Configuration StarkX-R Kernel
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -48,7 +48,7 @@ CONFIG_THREAD_INFO_IN_TASK=y
 CONFIG_INIT_ENV_ARG_LIMIT=32
 CONFIG_CROSS_COMPILE=""
 # CONFIG_COMPILE_TEST is not set
-CONFIG_LOCALVERSION="-「ѕтαякχ™」"
+CONFIG_LOCALVERSION="-「ѕтαякχ™」ʀ"
 # CONFIG_LOCALVERSION_AUTO is not set
 CONFIG_LOCALVERSION_BRANCH_SHA=y
 CONFIG_BUILD_SALT=""

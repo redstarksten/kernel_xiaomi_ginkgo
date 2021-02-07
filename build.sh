@@ -13,7 +13,6 @@ ANY_DIR=${EXTRA}/Anykernel
 ANY_IMG=${ANY_DIR}/Image.gz-dtb
 DTB=${KERNEL_DIR}/out/arch/arm64/boot/dtbo.img
 SIGNER_DIR=${EXTRA}/signer
-sha1=$(echo $(cat ${EXTRA}/sha1.txt | grep -Eo '^[^ ]+'))
 
 function check() {
 	echo -e ""

@@ -59,7 +59,8 @@ export sticker_id="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1
 export stickerr_id="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ"
 export logo=${EXTRA}/logo.jpg
 #env
-export PATH="$HOME/proton-clang/bin:$PATH"
+#export PATH="$HOME/proton-clang/bin:$PATH"
+export PATH="$HOME/schnell-clang/bin:$PATH"
 export LD_LIBRARY_PATH="$HOME/proton-clang/lib:$LD_LIBRARY_PATH"
 export ARCH=arm64
 export SUBARCH=arm64

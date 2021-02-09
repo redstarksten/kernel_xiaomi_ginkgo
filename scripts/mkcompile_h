@@ -57,7 +57,7 @@ fi
 
 UTS_VERSION="#$VERSION"
 CONFIG_FLAGS=""
-if [ -n "$SMP" ] ; then CONFIG_FLAGS="V1.3 SMP"; fi
+if [ -n "$SMP" ] ; then CONFIG_FLAGS=""; fi
 if [ -n "$PREEMPT" ] ; then CONFIG_FLAGS="$CONFIG_FLAGS PREEMT"; fi
 UTS_VERSION="$UTS_VERSION $CONFIG_FLAGS $TIMESTAMP"
 

@@ -131,3 +131,7 @@ kernel/configs/android-*.cfg
 #Ignoring Android.bp link file
 #
 Android.bp
+
+#Ignoring build script
+build.sh
+build2.sh

@@ -59,8 +59,8 @@ export sticker_id="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1
 export stickerr_id="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ"
 export logo=${EXTRA}/logo.jpg
 #env
-export PATH="$HOME/proton-clang/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/proton-clang/lib:$LD_LIBRARY_PATH"
+export PATH="$HOME/unnamed-clang/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/unnamed-clang/lib:$LD_LIBRARY_PATH"
 export ARCH=arm64
 export SUBARCH=arm64
 #CUSTOM KBUILD
@@ -130,16 +130,16 @@ function image() {
 <a href='https://t.me/StarkXKernel'>Channel</a> | <a href='https://t.me/StarkXOfficial'>Group</a> | <a href='https://github.com/redstarksten'>Github</a>
 
 <b><u>Changelog :</u></b>
-- Upstream to 'v4.14.219' linux stable
-- Bump wireguard v1.0.20210124
+- Upstream to 'v4.14.221' linux stable
+- etc.
 
-<b><u>FILEINFO StarkX-R</u></b>
+<b><u>StarkX-R for MiUi A11</u></b>
 Filename: '$filename'
 Filesize: '$filesize'
 ZIP sha1: '$sha1'
 Link: <a href='$link'>Download Here</a>
 
-<b><u>FILEINFO StarkX-R</u></b>
+<b><u>StarkX-Q for MiUi A10</u></b>
 Filename: '$filename2'
 Filesize: '$filesize2'
 ZIP sha1: '$sha2'
@@ -149,7 +149,7 @@ Link: <a href='$link2'>Download Here</a>
 
 - Dont forget to backup boot and dtbo image before flash the kernel!
 - Just flash, wipe dalvik cache then reboot
-- Tested on MIUI Eu 21.2.24 (decrypted)."
+- Tell me if you find any bugs or kernel wont boot."
 
 rm -rf $SIGNER_DIR/*.zip
 }

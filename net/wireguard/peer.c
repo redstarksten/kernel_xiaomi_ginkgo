@@ -34,9 +34,8 @@ struct wg_peer *wg_peer_create(struct wg_device *wg,
 		return ERR_PTR(ret);
 	if (dst_cache_init(&peer->endpoint_cache, GFP_KERNEL))
 		goto err;
-		
-	peer->device = wg;
 
+	peer->device = wg;
 	wg_noise_handshake_init(&peer->handshake, &wg->static_identity,
 				public_key, preshared_key, peer);
 	peer->internal_id = atomic64_inc_return(&peer_counter);
@@ -189,8 +188,7 @@ static void rcu_release(struct rcu_head *rcu)
 	struct wg_peer *peer = container_of(rcu, struct wg_peer, rcu);
 
 	dst_cache_destroy(&peer->endpoint_cache);
-	WARN_ON(wg_prev_queue_dequeue(&peer->tx_queue) || peer->tx_queue.peeked);
-	WARN_ON(wg_prev_queue_dequeue(&peer->rx_queue) || peer->rx_queue.peeked);
+	WARN_ON(wg_prev_queue_peek(&peer->tx_queue) || wg_prev_queue_peek(&peer->rx_queue));
 
 	/* The final zeroing takes care of clearing any remaining handshake key
 	 * material and other potentially sensitive information.

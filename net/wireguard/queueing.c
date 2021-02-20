@@ -54,13 +54,17 @@ void wg_prev_queue_init(struct prev_queue *queue)
 	queue->head = queue->tail = STUB(queue);
 	queue->peeked = NULL;
 	atomic_set(&queue->count, 0);
+	BUILD_BUG_ON(
+		offsetof(struct sk_buff, next) != offsetof(struct prev_queue, empty.next) -
+							offsetof(struct prev_queue, empty) ||
+		offsetof(struct sk_buff, prev) != offsetof(struct prev_queue, empty.prev) -
+							 offsetof(struct prev_queue, empty));
 }
 
 static void __wg_prev_queue_enqueue(struct prev_queue *queue, struct sk_buff *skb)
 {
 	WRITE_ONCE(NEXT(skb), NULL);
-	smp_wmb();
-	WRITE_ONCE(NEXT(xchg_relaxed(&queue->head, skb)), skb);
+	WRITE_ONCE(NEXT(xchg_release(&queue->head, skb)), skb);
 }
 
 bool wg_prev_queue_enqueue(struct prev_queue *queue, struct sk_buff *skb)

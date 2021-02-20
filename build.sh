@@ -60,8 +60,8 @@ export stickerr_id="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM
 export logo=${EXTRA}/logo.jpg
 #env
 #export PATH="$HOME/proton-clang/bin:$PATH"
-export PATH="$HOME/schnell-clang/bin:$PATH"
-export LD_LIBRARY_PATH="$HOME/schnell-clang/lib:$LD_LIBRARY_PATH"
+export PATH="$HOME/unnamed-clang/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/unnamed-clang/lib:$LD_LIBRARY_PATH"
 export ARCH=arm64
 export SUBARCH=arm64
 #CUSTOM KBUILD

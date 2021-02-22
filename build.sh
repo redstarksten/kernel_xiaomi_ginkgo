@@ -56,7 +56,6 @@ function check() {
 export token="1290161744:AAGMv7NlfFdjRG-OR1L644TU8J8dyqDcfH8"
 export chat_id="-1001169205147"
 export sticker_id="CAACAgUAAxkBAAEBY1BfcfdHj0mZ__wpN2xvPpGAb9VIngACiwAD7OCaHpbj1BCmgcEbGwQ"
-export stickerr_id="CAACAgUAAxkBAAEBYwlfcdkduys5zAvVpek_kvzSSOOXZwACGgADwNuQOaZM4AdxOsmJGwQ"
 export logo=${EXTRA}/logo.jpg
 #env
 export PATH="$HOME/unnamed-clang/bin:$PATH"
@@ -88,15 +87,7 @@ function sticker() {
 	echo -e ""
         ./telegram -s ${sticker_id}
 }
-# Stiker Error
-function stikerr() {
-	echo -e ""
-	echo -e "▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀"
-	echo -e "Send sticker error!"  	
-	echo -e "▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄"
-	echo -e ""
-	./telegram -s ${stickerr_id}
-}
+
 #Upload to gdrive
 function upload() {
 	echo -e ""

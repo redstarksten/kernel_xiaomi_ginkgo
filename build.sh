@@ -121,16 +121,20 @@ function image() {
 <a href='https://t.me/StarkXKernel'>Channel</a> | <a href='https://t.me/StarkXOfficial'>Group</a> | <a href='https://github.com/redstarksten'>Github</a>
 
 <b><u>Changelog :</u></b>
-- Upstream to 'v4.14.221' linux stable
-- etc.
+- Upstream to 'v4.14.222' linux stable
+- Bump wireguard version 1.0.20210219 
+- Merge CAF tag 'LA.UM.9.1.r1-08600-SMxxx0.0'
+- Merge CAF tag 'LA.UM.8.1.r1-16900-sm8150.0'
+- Merge CAF tag 'LA.UM.8.11.r1-05000-NICOBAR.0'
+- Etc...
 
-<b><u>StarkX-R for MiUi A11</u></b>
+<b><u>StarkX-R for A11</u></b>
 Filename: '$filename'
 Filesize: '$filesize'
 ZIP sha1: '$sha1'
 Link: <a href='$link'>Download Here</a>
 
-<b><u>StarkX-Q for MiUi A10</u></b>
+<b><u>StarkX-Q for A10</u></b>
 Filename: '$filename2'
 Filesize: '$filesize2'
 ZIP sha1: '$sha2'
@@ -140,7 +144,7 @@ Link: <a href='$link2'>Download Here</a>
 
 - Dont forget to backup boot and dtbo image before flash the kernel!
 - Just flash, wipe dalvik cache then reboot
-- Tell me if you find any bugs or kernel wont boot."
+- Tell me if you find any bugs or problem."
 
 rm -rf $SIGNER_DIR/*.zip
 }

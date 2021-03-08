@@ -587,35 +587,6 @@ void kgsl_pwrctrl_set_constraint(struct kgsl_device *device,
 }
 EXPORT_SYMBOL(kgsl_pwrctrl_set_constraint);
 
-/**
- * kgsl_pwrctrl_update_l2pc() - Update existing qos request
- * @device: Pointer to the kgsl_device struct
- * @timeout_us: the effective duration of qos request in usecs.
- *
- * Updates an existing qos request to avoid L2PC on the
- * CPUs (which are selected through dtsi) on which GPU
- * thread is running. This would help for performance.
- */
-void kgsl_pwrctrl_update_l2pc(struct kgsl_device *device,
-			unsigned long timeout_us)
-{
-	int cpu;
-
-	if (device->pwrctrl.l2pc_cpus_mask == 0)
-		return;
-
-	cpu = get_cpu();
-	put_cpu();
-
-	if ((1 << cpu) & device->pwrctrl.l2pc_cpus_mask) {
-		pm_qos_update_request_timeout(
-				&device->pwrctrl.l2pc_cpus_qos,
-				device->pwrctrl.pm_qos_cpu_mask_latency,
-				timeout_us);
-	}
-}
-EXPORT_SYMBOL(kgsl_pwrctrl_update_l2pc);
-
 static ssize_t kgsl_pwrctrl_thermal_pwrlevel_store(struct device *dev,
 					 struct device_attribute *attr,
 					 const char *buf, size_t count)
